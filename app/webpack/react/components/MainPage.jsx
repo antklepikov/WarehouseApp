@@ -21,19 +21,18 @@ export default class MainPage extends React.Component {
 
   render() {
     return (
-      <div className="container">
-          <div className="d-flex">
-              <div className="icon"></div>
-              <h1>Warehouses & Stores</h1>
-              <SignInModal buttonLabel="ОТКРЫТЬ НАХУЙ "/>
-              <button className="btn btn-primary">Sign iot</button>
-          </div>
-        <h3>
-          Hello!
-        </h3>
-        <hr />
+        <div className="container">
+            <div className="d-flex">
+                <div className="icon"></div>
+                <h1>Warehouses & Stores</h1>
+                <SignInModal buttonLabel="Open modal"/>
+                <button className="btn btn-primary">Sign out</button>
+            </div>
+            <h3>Hello! Log in for further work</h3>
+            <hr/>
 
-      </div>
+
+        </div>
     );
   }
 }

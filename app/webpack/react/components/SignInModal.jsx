@@ -17,8 +17,9 @@ const SignInModal = (props) => {
                     Привет подстрижися
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>ЗАКРЫТЬ НАХУЙ</Button>
+                    <Button color="primary" onClick={toggle}>Warehouse user</Button>{' '}
+                    <Button color="primary" onClick={toggle}>Store user</Button>{' '}
+                    <Button color="secondary" onClick={toggle}>Close modal</Button>
                 </ModalFooter>
             </Modal>
         </div>
