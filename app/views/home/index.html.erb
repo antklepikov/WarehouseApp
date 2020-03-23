@@ -1,17 +1,19 @@
-<% @user_signed_in = user_signed_in?%>
-<nav style="text-align: right">
-  <% if user_signed_in? %>
 
-    <%= link_to 'Edit Profile', edit_user_registration_path %>
-    <%= link_to('Logout', destroy_user_session_path, :method=>:delete) %>
-  <% else %>
-    <%= link_to('Login', new_user_session_path)  %>
-    <%= link_to('sign up', new_user_registration_path)  %>
-  <% end %>
-</nav>
+<!--<nav class="container" style="text-align: right;">-->
 
+  <%# if user_signed_in? %>
+
+    <%#= link_to 'Edit Profile', edit_user_registration_path %>
+    <%#= link_to('Logout', destroy_user_session_path, :method=>:delete) %>
+    <%#= react_component("MainPage") %>
+  <%# else %>
+    <%#= link_to('Login', new_user_session_path)  %>
+    <%#= link_to('Sign up', new_user_registration_path)  %>
+    <%#= react_component("Welcome") %>
+  <%# end %>
+  <%= react_component("NewHome", props: { isSignedIn: user_signed_in? }) %>
+
+<!--</nav>-->
 
 <!--<p>If you're logged in, check out <%#= link_to "the app", app_path %>!</p>-->
-<%= react_component("MainPage", props: {
-    isUserSignedIn: @user_signed_in
-}) %>
+

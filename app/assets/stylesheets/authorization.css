@@ -1,0 +1,45 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+.auth {
+    width: 300px;
+    padding:0 0;
+    margin: auto;
+    font-size: 15px;
+    /*text-align: center;*/
+}
+.field input {
+    font-family: "Roboto", sans-serif;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+}
+ .actions input {
+    font-family: "Roboto", sans-serif;
+    background: #4CAF50;
+    text-transform: uppercase;
+     font-size: 15px;
+     border: 0;
+     margin-top: 30px;
+     padding: 15px;
+     width: 100%;
+     margin-bottom: 15px;
+}
+.remember_checkbox label {
+    /*margin-right: 150px;*/
+}
+.remember_checkbox input{
+    width: 20px;
+    margin-top: 5px;
+}
+.cancel input {
+    background: #B00100;
+    color: #F7F7F7;
+    padding: 10px;
+}
+.back a{
+    color: #2E2F30;
+    margin-left: 15px;
+    font-size: 25px;
+
+}

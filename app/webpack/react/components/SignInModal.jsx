@@ -14,11 +14,11 @@ const SignInModal = (props) => {
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Modal title</ModalHeader>
                 <ModalBody>
-                    Привет подстрижися
+                    <Button color="primary" onClick={toggle}>Add Warehouse</Button>{' '}
+                    <Button color="primary" onClick={toggle}>Add Store</Button>{' '}
+
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggle}>Warehouse user</Button>{' '}
-                    <Button color="primary" onClick={toggle}>Store user</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Close modal</Button>
                 </ModalFooter>
             </Modal>
