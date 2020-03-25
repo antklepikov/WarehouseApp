@@ -17,6 +17,11 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+
+    <%= react_component("MainHeader", props: {
+          isSignedIn: user_signed_in?,
+          currentUser: current_user
+        }) %>
     <%= yield %>
   </body>
 </html>

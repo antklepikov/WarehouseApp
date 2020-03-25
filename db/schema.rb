@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_23_132125) do
+ActiveRecord::Schema.define(version: 2020_03_25_115443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,10 +67,13 @@ ActiveRecord::Schema.define(version: 2020_03_23_132125) do
     t.string "address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_warehouses_on_user_id"
   end
 
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "stores"
   add_foreign_key "products_warehouses", "products"
   add_foreign_key "products_warehouses", "warehouses"
+  add_foreign_key "warehouses", "users"
 end

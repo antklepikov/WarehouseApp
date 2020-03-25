@@ -6,7 +6,7 @@
     font-size: 15px;
     /*text-align: center;*/
 }
-.field input {
+.form-inputs input {
     font-family: "Roboto", sans-serif;
     background: #f2f2f2;
     width: 100%;
@@ -14,7 +14,7 @@
     margin: 0 0 15px;
     padding: 15px;
 }
- .actions input {
+ .form-actions input {
     font-family: "Roboto", sans-serif;
     background: #4CAF50;
     text-transform: uppercase;
@@ -25,14 +25,12 @@
      width: 100%;
      margin-bottom: 15px;
 }
-.remember_checkbox label {
-    /*margin-right: 150px;*/
-}
+
 .remember_checkbox input{
     width: 20px;
     margin-top: 5px;
 }
-.cancel input {
+.cancel a {
     background: #B00100;
     color: #F7F7F7;
     padding: 10px;
