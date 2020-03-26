@@ -10,10 +10,12 @@ const MainHeader = (props) => {
             </div>
             {props.isSignedIn && (
                 <div className="d-flex">
+                    <a href="/warehouse">Your warehouses </a>
+                    <a href="/stores">Your Stores</a>
                     <p>{props.currentUser.first_name}</p>
                     <a href={Routes.edit_user_registration_path()}>Edit Profile</a>
                     <a href={Routes.destroy_user_session_path()} >Logout</a>
-                    {/*<a href='#' onClick={(event) => getLogoutRequested(event)}>Logout</a>*/}
+
                 </div>
             )}
             {!props.isSignedIn && (

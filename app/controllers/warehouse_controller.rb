@@ -2,25 +2,30 @@ class WarehouseController < ApplicationController
 
   def index
     @warehouses = current_user.warehouses.all
-    puts '>>>>>>>>>', @warehouses
-  end
-
-  def show
-
+    respond_to do |format|
+          format.html
+          format.json { render json: @warehouses }
+    end
   end
 
   def create
     @warehouse = Warehouse.new(warehouse_params)
-      puts 'save', @warehouse.save
-      puts 'warehouse inspect', @warehouse.inspect
     @warehouse.user_id = current_user.id
     if @warehouse.save(:validate=>false)
-      render json: @warehouse
+      respond_to do |format|
+        format.html
+        format.json { render json: @warehouse }
+      end
     end
-    # redirect_to '/'
   end
 
   def destroy
+    @warehouse = Warehouse.find(params[:id]).destroy
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @warehouse }
+    end
 
   end
 

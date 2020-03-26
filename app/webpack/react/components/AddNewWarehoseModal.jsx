@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import axios from 'axios'
+import concat from 'lodash/concat';
 import ReactOnRails from 'react-on-rails';
 
 const AddNewWarehoseModal = (props) => {
 
-    const {buttonLabel, className} = props;
+    const {buttonLabel, className, setList, list} = props;
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
@@ -22,7 +23,8 @@ const AddNewWarehoseModal = (props) => {
             headers: ReactOnRails.authenticityHeaders()
         })
             .then((result) => {
-                console.log(result)
+                console.log(result);
+                setList(concat(list, result.data));
             })
             .catch((result) => {
                 console.log(result)

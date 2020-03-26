@@ -4,7 +4,7 @@ const Welcome = () => {
     return (
         <div className="container">
 
-            <h3>Авторизуйтесь пожалуйста</h3>
+            <h3>Hello!</h3>
             <hr/>
         </div>
     )
