@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
-import {map, without} from 'lodash';
+import {map, without, find} from 'lodash';
 // Components
 import {AddNewWarehoseModal} from "./AddNewWarehoseModal";
 
@@ -27,12 +27,30 @@ const ShowWarehouses = () => {
 
     const deleteWarehouse = (id) => {
         axios.delete(`/warehouse/${id}`)
-          .then( (result) => {
-              console.log('deleteWarehouse', result);
-              setList(without(list, result));
-          })
-            .catch((error) =>{
+            .then((result) => {
+                console.log('deleteWarehouse', result);
+                setList(without(list, list.find((listItem) => {
+                        return listItem.id === id;
+                    }
+                )));
+            })
+            .catch((error) => {
                 console.log(error)
+            })
+    };
+
+    const updateWarehouse = (id) => {
+        axios.put(`/warehouse/${id}`)
+            .then((result) => {
+                console.log('SUCCESS', result);
+
+                // setList(without(list, list.find((listItem) => {
+                //         return listItem.id === id;
+                //     }
+                // )));
+            })
+            .catch((error) => {
+                console.log('ERROR', error)
             })
     };
 
@@ -45,15 +63,16 @@ const ShowWarehouses = () => {
                 <div>
                     { map(list, (listElement, key) => {
                             return (
-                                <div key={`listElement-${listElement.id}-${key}`}>
+                                <div key={`listElement-${listElement.id}-${key}`} className="content-list">
                                     Warehouse:
                                     {listElement.number}
                                     {listElement.title}
                                     {listElement.address}
-
-                                    <button type="button" onClick={() => deleteWarehouse(listElement.id)} className="btn btn-outline-danger btn-sm float-right">
-                                    {/*<button type="button" className="btn btn-outline-danger btn-sm float-right">*/}
+                                    <button type="button" onClick={() => deleteWarehouse(listElement.id)} className="btn btn-outline-danger btn-sm float-right  ml-3">
                                         <i className="fa fa-trash-o"/>
+                                    </button>
+                                    <button type="button"  onClick={() => updateWarehouse(listElement.id)} className="btn btn-outline-success btn-sm float-right">
+                                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             )
