@@ -4,12 +4,11 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {map, without, find} from 'lodash';
 // Components
-import {AddNewWarehoseModal} from "./AddNewWarehoseModal";
-
+import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
+import {UpdateWarehouseModal} from './UpdateWarehouseModal'
 const ShowWarehouses = () => {
 
     const [list, setList] = useState([]);
-    console.log('LIST', list);
     useEffect(() => {
         axios.get("/warehouse", {
             headers: {
@@ -28,7 +27,6 @@ const ShowWarehouses = () => {
     const deleteWarehouse = (id) => {
         axios.delete(`/warehouse/${id}`)
             .then((result) => {
-                console.log('deleteWarehouse', result);
                 setList(without(list, list.find((listItem) => {
                         return listItem.id === id;
                     }
@@ -39,31 +37,18 @@ const ShowWarehouses = () => {
             })
     };
 
-    const updateWarehouse = (id) => {
-        axios.put(`/warehouse/${id}`)
-            .then((result) => {
-                console.log('SUCCESS', result);
-
-                // setList(without(list, list.find((listItem) => {
-                //         return listItem.id === id;
-                //     }
-                // )));
-            })
-            .catch((error) => {
-                console.log('ERROR', error)
-            })
-    };
 
     return (
         <div className="container">
             <div className="main">
-                <AddNewWarehoseModal buttonLabel="Add warehouse" setList={setList} list={list}/>
+                <AddNewWarehouseModal buttonLabel="Add warehouse" setList={setList} list={list}/>
                 <h3>Your warehouses</h3>
+
                 <hr/>
                 <div>
                     { map(list, (listElement, key) => {
                             return (
-                                <div key={`listElement-${listElement.id}-${key}`} className="content-list">
+                                <div key={`listElement-${listElement.id}-${key}`} className="content-list d-flex">
                                     Warehouse:
                                     {listElement.number}
                                     {listElement.title}
@@ -71,9 +56,9 @@ const ShowWarehouses = () => {
                                     <button type="button" onClick={() => deleteWarehouse(listElement.id)} className="btn btn-outline-danger btn-sm float-right  ml-3">
                                         <i className="fa fa-trash-o"/>
                                     </button>
-                                    <button type="button"  onClick={() => updateWarehouse(listElement.id)} className="btn btn-outline-success btn-sm float-right">
-                                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </button>
+                                    <UpdateWarehouseModal listElement = {listElement} />
+
+
                                 </div>
                             )
                         })

@@ -21,20 +21,20 @@ class WarehouseController < ApplicationController
 
   def update
     @warehouse = Warehouse.find(params[:id])
-    puts '1111111'
-    puts @warehouse
-    puts '1111111'
-    if @warehouse.update(warehouse_params)
+
+    puts '>>>>>>>>', warehouse_params
+    puts '>>>>>>>>'
+    @warehouse.update(warehouse_params)
       respond_to do |format|
         format.html
         format.json { render json: @warehouse }
-      end
+
     end
   end
 
   def destroy
     @warehouse = Warehouse.find(params[:id]).destroy
-
+    puts '>>>>>>>>', @warehouse
     respond_to do |format|
       format.html
       format.json { render json: @warehouse }

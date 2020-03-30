@@ -4,18 +4,13 @@ import axios from 'axios'
 import concat from 'lodash/concat';
 import ReactOnRails from 'react-on-rails';
 
-const AddNewWarehoseModal = (props) => {
+const AddNewWarehouseModal = (props) => {
 
     const {buttonLabel, className, setList, list} = props;
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
     const [headData, setHeadData] = useState({title: '', number: '', address: ''});
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        console.log(headData.title, headData.number,headData.address)
-    };
 
 
     const createWarehouse = () => {
@@ -35,16 +30,14 @@ const AddNewWarehoseModal = (props) => {
 
             <Button className="btn btn-warning" onClick={toggle}>{buttonLabel}</Button>
             <Modal isOpen={modal} toggle={toggle} className={className}>
-                <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+                <ModalHeader toggle={toggle}>Create warehouse</ModalHeader>
                 <ModalBody>
-                    <form onSubmit={handleSubmit}>
                         <label>
                             <input name="title" type="text"  value={headData.title} onChange={(e) => setHeadData({...headData, title: e.target.value})} />
                             <input name="number" type="number" value={headData.number} onChange={(e) => setHeadData({...headData, number: e.target.value})} />
                             <input name="address" type="text" value={headData.address} onChange={(e) => setHeadData({...headData, address: e.target.value})} />
                         </label>
                         <input className="btn btn-warning" type="submit" value="Отправить" onClick={createWarehouse} />
-                    </form>
 
                 </ModalBody>
                 <ModalFooter>
@@ -56,7 +49,7 @@ const AddNewWarehoseModal = (props) => {
 
 
 };
-export {AddNewWarehoseModal}
+export {AddNewWarehouseModal}
 
 
 
