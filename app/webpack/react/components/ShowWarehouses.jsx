@@ -6,6 +6,7 @@ import {map, without, find} from 'lodash';
 // Components
 import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
 import {UpdateWarehouseModal} from './UpdateWarehouseModal'
+
 const ShowWarehouses = () => {
 
     const [list, setList] = useState([]);
@@ -37,33 +38,49 @@ const ShowWarehouses = () => {
             })
     };
 
-
     return (
-        <div className="container">
+        <div className="container warehouse">
             <div className="main">
                 <AddNewWarehouseModal buttonLabel="Add warehouse" setList={setList} list={list}/>
                 <h3>Your warehouses</h3>
 
-                <hr/>
-                <div>
+                <table className="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Show</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+
+
+                <tbody >
                     { map(list, (listElement, key) => {
                             return (
-                                <div key={`listElement-${listElement.id}-${key}`} className="content-list d-flex">
-                                    Warehouse:
-                                    {listElement.number}
-                                    {listElement.title}
-                                    {listElement.address}
-                                    <button type="button" onClick={() => deleteWarehouse(listElement.id)} className="btn btn-outline-danger btn-sm float-right  ml-3">
-                                        <i className="fa fa-trash-o"/>
-                                    </button>
-                                    <UpdateWarehouseModal listElement = {listElement} />
+                                    <tr key={`listElement-${listElement.id}-${key}`}>
+                                        <th scope="row">{key + 1}</th>
+                                        <td>{listElement.title}</td>
+                                        <td>{listElement.number}</td>
+                                        <td>{listElement.address}</td>
+                                        <td>
+                                            <a className="btn btn-light" type="button" href={`/warehouse/${listElement.id}`}>Show {listElement.title}</a>
+                                        </td>
+                                        <td>
+                                            <button type="button" onClick={() => deleteWarehouse(listElement.id)}
+                                                    className="btn btn-outline-danger btn-sm  ">
+                                                <i className="fa fa-trash-o"/>
+                                            </button>
+                                        </td>
+                                    </tr>
 
-
-                                </div>
                             )
                         })
                     }
-                </div>
+                </tbody>
+                </table>
             </div>
         </div>
     );

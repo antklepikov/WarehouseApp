@@ -2,21 +2,19 @@ import React, {useState, useEffect, useRef} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import axios from 'axios'
 
-const UpdateWarehouseModal = ({className, listElement, list}) => {
+const UpdateWarehouseModal = ({className, warehouse, list}) => {
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
     // const [updateData, setUpdateData] = useState({title: '', number: '', address: ''});
-    const [updateData, setUpdateData] = useState({title: listElement.title, number: listElement.number, address: listElement.address});
-    console.log("updateData", updateData);
-
+    const [updateData, setUpdateData] = useState({title: warehouse.title, number: warehouse.number, address: warehouse.address});
 
     const updateWarehouse = () => {
-        axios.put(`/warehouse/${listElement.id}`, {warehouse:{title: updateData.title, number: updateData.number, address: updateData.address}})
+        axios.put(`/warehouse/${warehouse.id}`, {warehouse:{title: updateData.title, number: updateData.number, address: updateData.address}})
             .then((result) => {
                 console.log('SUCCESS', result);
-                setUpdateData(list.splice(listElement.id, 1, updateData));
+                setUpdateData(list.splice(warehouse.id, 1, updateData));
             })
             .catch((error) => {
                 console.log('ERROR', error)
@@ -31,13 +29,33 @@ const UpdateWarehouseModal = ({className, listElement, list}) => {
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Update warehouse</ModalHeader>
                 <ModalBody>
-
-                        <label>
-                            <input name="title" type="text"  value={updateData.title} onChange={(e) => setUpdateData({...updateData, title: e.target.value})} />
-                            <input name="number" type="number" value={updateData.number} onChange={(e) => setUpdateData({...updateData, number: e.target.value})} />
-                            <input name="address" type="text" value={updateData.address} onChange={(e) => setUpdateData({...updateData, address: e.target.value})} />
-                        </label>
-                        <input className="btn btn-warning" type="submit" value="Отправить" onClick={() => updateWarehouse(listElement.id)} />
+                    <table className="table">
+                        <tbody>
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                <input name="title" type="text" value={updateData.title}
+                                       onChange={(e) => setUpdateData({...updateData, title: e.target.value})}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Number:</td>
+                            <td>
+                                <input name="number" type="number" value={updateData.number}
+                                       onChange={(e) => setUpdateData({...updateData, number: e.target.value})}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>
+                                <input name="address" type="text" value={updateData.address}
+                                       onChange={(e) => setUpdateData({...updateData, address: e.target.value})}/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <input className="btn btn-warning" type="submit" value="Отправить"
+                           onClick={() => updateWarehouse(warehouse.id)}/>
 
                 </ModalBody>
                 <ModalFooter>

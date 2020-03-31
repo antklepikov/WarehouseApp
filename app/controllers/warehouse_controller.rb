@@ -8,6 +8,14 @@ class WarehouseController < ApplicationController
     end
   end
 
+  def show
+    @warehouse = Warehouse.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @warehouse }
+    end
+  end
+
   def create
     @warehouse = Warehouse.new(warehouse_params)
     @warehouse.user_id = current_user.id

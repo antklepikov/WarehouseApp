@@ -5,4 +5,4 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Warehouse.create([{title: 'Best'}, {number: 1}, {address: 'Petrovskaya'}])
+Product.create([{title: 'Best'}])

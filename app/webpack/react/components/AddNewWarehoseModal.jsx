@@ -3,6 +3,7 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import axios from 'axios'
 import concat from 'lodash/concat';
 import ReactOnRails from 'react-on-rails';
+import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
 
 const AddNewWarehouseModal = (props) => {
 
@@ -32,14 +33,34 @@ const AddNewWarehouseModal = (props) => {
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Create warehouse</ModalHeader>
                 <ModalBody>
-                        <label>
-                            <input name="title" type="text"  value={headData.title} onChange={(e) => setHeadData({...headData, title: e.target.value})} />
-                            <input name="number" type="number" value={headData.number} onChange={(e) => setHeadData({...headData, number: e.target.value})} />
-                            <input name="address" type="text" value={headData.address} onChange={(e) => setHeadData({...headData, address: e.target.value})} />
-                        </label>
-                        <input className="btn btn-warning" type="submit" value="Отправить" onClick={createWarehouse} />
-
+                    <table className="table">
+                        <tbody>
+                        <tr>
+                            <td>Title:</td>
+                            <td>
+                                <input name="title" type="text" value={headData.title}
+                                       onChange={(e) => setHeadData({...headData, title: e.target.value})}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Number:</td>
+                            <td>
+                                <input name="number" type="number" value={headData.number}
+                                       onChange={(e) => setHeadData({...headData, number: e.target.value})}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>
+                                <input name="address" type="text" value={headData.address}
+                                       onChange={(e) => setHeadData({...headData, address: e.target.value})}/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <input className="btn btn-warning" type="submit" value="Отправить" onClick={createWarehouse}/>
                 </ModalBody>
+
                 <ModalFooter>
                     <Button color="secondary" onClick={toggle}>Close modal</Button>
                 </ModalFooter>
