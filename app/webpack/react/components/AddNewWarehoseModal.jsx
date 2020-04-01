@@ -15,7 +15,13 @@ const AddNewWarehouseModal = (props) => {
 
 
     const createWarehouse = () => {
-        axios.post('/warehouse', {warehouse:{title: headData.title, number: headData.number, address: headData.address}},{
+        axios.post('/warehouse', {
+            warehouse: {
+                title: headData.title,
+                number: headData.number,
+                address: headData.address
+            }
+        }, {
             headers: ReactOnRails.authenticityHeaders()
         })
             .then((result) => {
