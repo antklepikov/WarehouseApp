@@ -2,17 +2,20 @@ class ProductController < ApplicationController
 
   def index
     # @products = Warehouse.find(params[:warehouse_id]).products.all
+
     @products = Product.all
-    puts ">>>>>", @warehouse
+    puts ">>>>>@warehouseindex", params[:warehouse_id]
+
     respond_to do |format|
       format.html
       format.json { render json: @products }
     end
   end
   def create
-    @product = Product.create(products_params)
+    @warehouse = Warehouse.find(params[:id])
+    @product = Product.new(products_params).save
     puts ">>>>>>> @warehouse", @warehouse
-    @warehouseProduct = ProductsWarehouse.create(warehouse_id: @warehouse, product_id: @product.id)
+    @warehouseProduct = ProductsWarehouse.new(warehouse_id: @warehouse.id, product_id: @product.id).save
     respond_to do |format|
       format.html
       format.json { render json: @product }

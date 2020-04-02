@@ -10,6 +10,7 @@ class WarehouseController < ApplicationController
 
   def show
     @warehouse = Warehouse.find(params[:id])
+    @products = Product.all
     respond_to do |format|
       format.html
       format.json { render json: @warehouse }
