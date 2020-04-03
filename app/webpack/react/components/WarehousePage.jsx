@@ -3,18 +3,19 @@ import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
 import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
-import {map, without, find} from 'lodash';
+import {map, without, find, concat} from 'lodash';
 
 
 const WarehousePage = ({warehouse, products}) => {
 
-    const [productData, setProductData] = useState({title: ''});
+    const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
             product: {
                 title: productData.title,
-            }
+                products_count: productData.products_count
+            },
         }, {
             headers: ReactOnRails.authenticityHeaders()
         })
@@ -27,43 +28,85 @@ const WarehousePage = ({warehouse, products}) => {
             })
     };
 
-
-
     return (
         <div className='container'>
-            {/*<a href={`/warehouse/${warehouse.id}/product`}>Products</a>*/}
+            <div className="d-flex">
+                <div>
+                    <div className="font-weight-bold">
+                        Title of warehouse:
+                        <h4 className="font-italic font-weight-light">
+                            {warehouse.title}
+                        </h4>
+                    </div>
+                    <div className="font-weight-bold">
+                        Number of warehouse:
+                        <h4 className="font-italic font-weight-light">
+                            {warehouse.number}
+                        </h4>
+                    </div>
+                    <div className="font-weight-bold">
+                        Address of warehouse:
+                        <h4 className="font-italic font-weight-light">
+                            {warehouse.address}
+                        </h4>
+                    </div>
+                </div>
+                <UpdateWarehouseModal warehouse={warehouse}/>
+
+                <div className="ml-auto text-center">
+                    Add new product:
+                    <div className="mb-2">
+                        <input name="title"
+                               type="text"
+                               placeholder="title"
+                               value={productData.title || ''}
+                               onChange={(e) => setProductData({...productData, title: e.target.value})}/>
+                    </div>
+                    <div className="mb-2">
+                        <input name="products_count"
+                               type="text"
+                               placeholder="count"
+                               value={productData.products_count || ''}
+                               onChange={(e) => setProductData({...productData, products_count: e.target.value})}/>
+                    </div>
+
+                    <input className="btn btn-warning mb-2" type="submit" value="Отправить" onClick={createProduct}/>
+                </div>
+            </div>
+            <div className="d-flex products-block">
                 <table className="table">
                     <thead>
                     <tr>
+                        <th scope="col">№</th>
                         <th scope="col">Title</th>
-                        <th scope="col">Number</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Edit</th>
+                        <th scope="col">Count</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td scope="col">{warehouse.title}</td>
-                        <td scope="col">{warehouse.number}</td>
-                        <td>{warehouse.address}</td>
-                        <td><UpdateWarehouseModal warehouse = {warehouse} /></td>
-                    </tr>
-                    </tbody>
-                </table>
-            <div>
-                {map(products, (productItem, key) => {
-                    return (
-                        <div key={`productItem-${productItem.id}-${key}`}>
-                            Product: {productItem.title}
-                        </div>
-                    )
-                })
+                <tbody>
 
-                }
-            </div>
-            <div>
-                <input name="title" type="text" value={productData.title} onChange={(e) => setProductData({...productData, title: e.target.value})}/>
-                <input className="btn btn-warning" type="submit" value="Отправить" onClick={createProduct}/>
+                    {map(products, (productItem, key) => {
+                        if (productItem.products_count > 0) {
+                            return (
+                                <tr key={`productItem-${productItem.id}-${key}`}>
+                                    <td>
+                                        {key + 1})
+                                    </td>
+                                    <td>
+                                        {productItem.title}
+                                    </td>
+                                    <td>
+                                        {productItem.products_count}
+                                    </td>
+                                </tr>
+                            )
+                            }
+
+                        }
+                    )
+                    }
+                </tbody>
+                </table>
+
             </div>
         </div>
     )

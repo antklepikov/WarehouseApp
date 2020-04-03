@@ -15,10 +15,10 @@ const MainHeader = (props) => {
                         <a href="/stores" type='button' className="btn btn-success">Your Stores</a>
                     </div>
                     <div className="header-auth ">
-                        <p>User: {props.currentUser.first_name} {props.currentUser.last_name}</p>
                         <a href={Routes.edit_user_registration_path()} type='button' className="btn btn-info">Edit
                             Profile</a>
                         <a href={Routes.destroy_user_session_path()} type='button' className="btn btn-info">Logout</a>
+                        <p>User: {props.currentUser.first_name} {props.currentUser.last_name}</p>
                     </div>
                 </div>
             )}
