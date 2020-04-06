@@ -22,7 +22,12 @@ class ProductController < ApplicationController
   end
 
   def destroy
-
+    @product = Product.find(params[:id])
+    puts ">>>>>> product delete", @product.inspect
+    # @warehouseProduct = ProductsWarehouse.find(warehouse_id: warehouse_id, product_id: id)
+    # @warehouseProduct =  ProductsWarehouse.find_by warehouse_id: '61'
+    @warehouseProduct =  ProductsWarehouse.where(product_id: @product.id)
+    puts ">>>>>> @warehouseProduct delete", @warehouseProduct.inspect
   end
 
   private

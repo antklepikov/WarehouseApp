@@ -8,5 +8,6 @@ Rails.application.routes.draw do
     resources :product
   end
 
+  resources :store
   root "home#index"
 end

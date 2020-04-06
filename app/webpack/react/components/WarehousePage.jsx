@@ -3,12 +3,16 @@ import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
 import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
-import {map, without, find, concat} from 'lodash';
+import {map, without, find} from 'lodash';
+import concat from 'lodash/concat';
 
-
-const WarehousePage = ({warehouse, products}) => {
+const WarehousePage =({warehouse, products}) => {
 
     const [productData, setProductData] = useState({title: '', products_count: ''});
+
+    // useEffect( () => {
+    //    concat(products, productData)
+    // }, []);
 
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
@@ -21,13 +25,25 @@ const WarehousePage = ({warehouse, products}) => {
         })
             .then((result) => {
                 console.log(result);
-                setProductData(concat(productData, result.data));
+                setProductData(result.data);
             })
             .catch((result) => {
                 console.log(result)
             })
     };
-
+    // const deleteProduct = (id) => {
+    //     console.log("product.id", products.id);
+    //     axios.delete(`/warehouse/${warehouse.id}/product/${id}`)
+    //         .then((result) => {
+    //             setProductData(without(productData, productData.find((productElement) => {
+    //                     return productElement.id === id;
+    //                 }
+    //             )));
+    //         })
+    //         .catch((error) => {
+    //             console.log(error)
+    //         })
+    // };
     return (
         <div className='container'>
             <div className="d-flex">
@@ -97,6 +113,7 @@ const WarehousePage = ({warehouse, products}) => {
                                     <td>
                                         {productItem.products_count}
                                     </td>
+
                                 </tr>
                             )
                             }
@@ -111,4 +128,7 @@ const WarehousePage = ({warehouse, products}) => {
         </div>
     )
 };
-export default (props) => <WarehousePage {...props} />;
+
+const WarehousePageChange = React.memo(WarehousePage);
+
+export default (props) => <WarehousePageChange {...props} />;

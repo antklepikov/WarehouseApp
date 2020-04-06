@@ -22,5 +22,11 @@
 }
 .products-block {
   font-size: 20px;
+  overflow-y: auto;
+  height: 400px;
+}
+.products-block th {
+  position: sticky; top: 0;
+  background:#eee;
 }
 

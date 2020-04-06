@@ -12,7 +12,7 @@ const MainHeader = (props) => {
                 <div className="d-flex block-header">
                     <div className='header-buttons'>
                         <a href="/warehouse" type='button' className="btn btn-success">Your warehouses </a>
-                        <a href="/stores" type='button' className="btn btn-success">Your Stores</a>
+                        <a href="/store" type='button' className="btn btn-success">Your Stores</a>
                     </div>
                     <div className="header-auth ">
                         <a href={Routes.edit_user_registration_path()} type='button' className="btn btn-info">Edit
