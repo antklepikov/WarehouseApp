@@ -24,8 +24,8 @@ const MainHeader = (props) => {
             )}
             {!props.isSignedIn && (
                 <div className="d-flex">
-                    <a href={Routes.new_user_session_path()}>Login</a>
-                    <a href={Routes.new_user_registration_path()}>Sign In</a>
+                    <a href={Routes.new_user_session_path()} type='button' className="btn btn-info">Login</a>
+                    <a href={Routes.new_user_registration_path()} type='button' className="btn btn-info">Sign In</a>
                 </div>
             )}
         </div>
