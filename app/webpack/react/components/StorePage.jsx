@@ -4,9 +4,9 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {map, without, find} from 'lodash';
 import concat from 'lodash/concat';
+import NewOrderModal from '../components/NewOrderModal'
 
-
-const StorePage = ({store}) => {
+const StorePage = ({store, warehouses}) => {
 
   return (
       <div className = "container">
@@ -15,9 +15,10 @@ const StorePage = ({store}) => {
               <h4 className="font-italic font-weight-light">
                   {store.title}
               </h4>
+
           </div>
-          
-          <table className="table table-condensed">
+          <NewOrderModal buttonLabel="Add order" warehouses={warehouses}/>
+          <table className="table table-sm">
               <thead>
               <tr>
                   <th>№</th>

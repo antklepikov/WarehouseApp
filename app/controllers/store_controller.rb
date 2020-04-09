@@ -10,6 +10,10 @@ class StoreController < ApplicationController
   end
 
   def show
+    @warehouses = current_user.warehouses.all
+
+    # puts "products", @products.inspect
+    puts "warehouses", @warehouses.inspect
     @store = Store.find(params[:id])
     respond_to do |format|
       format.html

@@ -23,3 +23,9 @@
 #       user_id: Faker::Number.within(range: 6..17)
 #   )
 # end
+# 800.times do
+#   Store.create(
+#     user_id: Faker::Number.within(range: 6..17),
+#     title: Faker::Restaurant.name
+# )
+# end
