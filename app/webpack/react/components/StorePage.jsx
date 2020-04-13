@@ -18,20 +18,9 @@ const StorePage = ({store, warehouses}) => {
 
           </div>
           <NewOrderModal buttonLabel="Add order" warehouses={warehouses}/>
-          <table className="table table-sm">
-              <thead>
-              <tr>
-                  <th>№</th>
-                  <th>Title</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                  <td></td>
-              </tr>
-
-              </tbody>
-          </table>
+          <div className = "mt-2">
+              Products in this store:
+          </div>
       </div>
   );
 };

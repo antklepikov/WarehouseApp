@@ -2,8 +2,8 @@ class ProductController < ApplicationController
 
   def index
 
-    @products = Product.all
-
+    # @products = Product.all
+    @products = Warehouse.find(params[:warehouse_id]).products.all
     respond_to do |format|
       format.html
       format.json { render json: @products }
@@ -20,7 +20,9 @@ class ProductController < ApplicationController
       format.json { render json: @product }
     end
   end
+  def update
 
+  end
   def destroy
     @product = Product.find(params[:id])
     puts ">>>>>> product delete", @product.inspect

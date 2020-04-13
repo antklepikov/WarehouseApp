@@ -1,52 +1,66 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input} from 'reactstrap';
 import axios from 'axios'
 import {map, without, find} from 'lodash';
 import Select from 'react-select'
+
 const NewOrderModal = ({className, buttonLabel, warehouses}) => {
-
-    const options = map(warehouses, (warehouse) => {
-           return (
-               {value:warehouse , label: warehouse.title}
-       )
-       })
-
     const [modal, setModal] = useState(false);
+    const [productsList, setProductsList] = useState([]);
+
     const toggle = () => setModal(!modal);
 
-    const [list, setList] = useState([]);
-    console.log("list", list);
+    const listReducer = ({list}) => {
+        map(list, (listItem) => {
+            console.log("ListItem", listItem)
+            return (
+                {value: listItem, label: listItem.title}
+            )
+        })
+    };
 
+    const warehouseList = map(warehouses, (warehouse) => {
+        return (
+            {value: warehouse, label: warehouse.title}
+        )
+    })
+    const productListOptions = map(productsList, (product) => {
+        return (
+            {value: product, label: product.title}
+        )
+    })
 
     const getProducts = (warehouse) => {
-        console.log("Press button", warehouse);
-        axios.get(`/warehouse/${warehouse.id}/product`, {
+        axios.get(`/warehouse/${warehouse.value.id}/product`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8'
             }
         })
             .then( (result) => {
-                setList(result.data);
+                setProductsList(result.data);
             })
             .catch( (error) => {
                 console.log(error)
             });
     };
+
+    const productOrder = () => {
+        console.log("wareadfv", warehouseList.value)
+        console.log("product", productListOptions.value)
+        axios.put(`/warehouse/${warehouseList.value.id}/product/${productListOptions.value.id}`, {product: {}})
+    };
+
     return (
         <div>
             <Button className="btn btn-warning" onClick={toggle}>{buttonLabel}</Button>
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Update warehouse</ModalHeader>
                 <ModalBody>
-                    <Select options={options} onChange = {getProducts}/>
-                    <div>
-                        {map(list, (productElement, key) => {
-                            return (
-                                <div key={key}>{productElement.title} - {productElement.products_count}</div>
-                            )
-                        })}
-                    </div>
+                    <Select options={warehouseList} onChange = {getProducts}/>
+                    <Select options={productListOptions}/>
+                    <Input type="number" placeholder="Count"/>
+                    <Input type="submit" value="Отправить" onClick = {productOrder}/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={toggle}>Close modal</Button>
