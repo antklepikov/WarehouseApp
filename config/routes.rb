@@ -9,5 +9,9 @@ Rails.application.routes.draw do
   end
 
   resources :store
+
+  resources :store do
+    resources :order
+  end
   root "home#index"
 end

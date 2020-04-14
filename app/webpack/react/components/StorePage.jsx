@@ -17,7 +17,7 @@ const StorePage = ({store, warehouses}) => {
               </h4>
 
           </div>
-          <NewOrderModal buttonLabel="Add order" warehouses={warehouses}/>
+          <NewOrderModal buttonLabel="Add order" warehouses={warehouses} store={store}/>
           <div className = "mt-2">
               Products in this store:
           </div>
