@@ -29,20 +29,31 @@ const ShowStores = ({stores}) => {
 
   return (
       <div className="container d-flex">
-          <div>
+          <table className="table col-6">
+              <thead>
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Show</th>
+              </tr>
+              </thead>
+          <tbody>
               {map(stores, (storeItem, key) => {
 
                       return (
-                          <div key={`storeItem-${storeItem.id}-${key}`}>
-                              {storeItem.title}
-                              <a className="btn btn-light" type="button" href={`/store/${storeItem.id}`}>Show {storeItem.title}</a>
-                          </div>
+                          <tr key={`storeItem-${storeItem.id}-${key}`}>
+                              <td>{key}</td>
+                              <td>{storeItem.title}</td>
+                              <td><a className="btn btn-light" type="button" href={`/store/${storeItem.id}`}>Show {storeItem.title}</a></td>
+                          </tr>
                       );
                   }
               )
               }
-          </div>
+          </tbody>
+          </table>
           <div className='ml-auto text-center'>
+              <p>Add new store</p>
               <div className="mb-2">
                   <input name="title"
                          type="text"

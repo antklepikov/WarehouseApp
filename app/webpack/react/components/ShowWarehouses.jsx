@@ -55,31 +55,30 @@ const ShowWarehouses = () => {
                         <th scope="col">Delete</th>
                     </tr>
                     </thead>
+                    <tbody>
+                    {map(list, (listElement, key) => {
+                        return (
+                            <tr key={`listElement-${listElement.id}-${key}`}>
+                                <th scope="row">{key + 1}</th>
+                                <td>{listElement.title}</td>
+                                <td>{listElement.number}</td>
+                                <td>{listElement.address}</td>
+                                <td>
+                                    <a className="btn btn-light" type="button"
+                                       href={`/warehouse/${listElement.id}`}>Show {listElement.title}</a>
+                                </td>
+                                <td>
+                                    <button type="button" onClick={() => deleteWarehouse(listElement.id)}
+                                            className="btn btn-outline-danger btn-sm  ">
+                                        <i className="fa fa-trash-o"/>
+                                    </button>
+                                </td>
+                            </tr>
 
-
-                <tbody >
-                    { map(list, (listElement, key) => {
-                            return (
-                                    <tr key={`listElement-${listElement.id}-${key}`}>
-                                        <th scope="row">{key + 1}</th>
-                                        <td>{listElement.title}</td>
-                                        <td>{listElement.number}</td>
-                                        <td>{listElement.address}</td>
-                                        <td>
-                                            <a className="btn btn-light" type="button" href={`/warehouse/${listElement.id}`}>Show {listElement.title}</a>
-                                        </td>
-                                        <td>
-                                            <button type="button" onClick={() => deleteWarehouse(listElement.id)}
-                                                    className="btn btn-outline-danger btn-sm  ">
-                                                <i className="fa fa-trash-o"/>
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                            )
-                        })
+                        )
+                    })
                     }
-                </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

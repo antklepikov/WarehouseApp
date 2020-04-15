@@ -5,14 +5,11 @@ import axios from 'axios';
 import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
 import {map, without, find} from 'lodash';
 import concat from 'lodash/concat';
+import WarehouseOrderModal from "./WarehouseOrderModal";
 
-const WarehousePage =({warehouse, products}) => {
+const WarehousePage =({warehouse, products, order}) => {
 
     const [productData, setProductData] = useState({title: '', products_count: ''});
-
-    // useEffect( () => {
-    //    concat(products, productData)
-    // }, []);
 
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
@@ -68,7 +65,7 @@ const WarehousePage =({warehouse, products}) => {
                     </div>
                 </div>
                 <UpdateWarehouseModal warehouse={warehouse}/>
-
+                <WarehouseOrderModal order={order}/>
                 <div className="ml-auto text-center">
                     Add new product:
                     <div className="mb-2">

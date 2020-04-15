@@ -10,6 +10,7 @@ class WarehouseController < ApplicationController
 
   def show
     @warehouse = Warehouse.find(params[:id])
+    @order= Order.where(warehouse_id: @warehouse.id)
     @products = Warehouse.find(params[:id]).products.all
     respond_to do |format|
       format.html

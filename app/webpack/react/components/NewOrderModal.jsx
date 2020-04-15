@@ -50,7 +50,14 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
         //     .catch((error) => {
         //         console.log('ERROR', error)
         //     })
-        axios.post(`/store/${store.id}/order`, {orders: {}})
+        axios.post(`/store/${store.id}/order`, {
+            orders: {
+                count: productCountOrder,
+                warehouse_id: currentWarehouse.id,
+                product_id: currentProduct.id,
+                store_id: store.id
+            }
+        })
             .then((result) => {
                 console.log('SUCCESS', result);
             })
