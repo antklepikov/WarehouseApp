@@ -29,7 +29,7 @@ const ShowStores = ({stores}) => {
 
   return (
       <div className="container d-flex">
-          <table className="table col-6">
+          <table className="table col-6 products-block">
               <thead>
               <tr>
                   <th scope="col">#</th>

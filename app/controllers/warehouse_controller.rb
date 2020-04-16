@@ -1,10 +1,15 @@
 class WarehouseController < ApplicationController
 
   def index
-    @warehouses = current_user.warehouses.all
+    @warehouses = current_user.warehouses.all.page(params[:page])
+    puts "warehouses", params.inspect
+    # @warehouses = current_user.warehouses.all
     respond_to do |format|
           format.html
-          format.json { render json: @warehouses }
+          format.json {
+            render json: @warehouses,
+                   total_pages: @warehouses.total_pages
+          }
     end
   end
 
@@ -31,9 +36,6 @@ class WarehouseController < ApplicationController
 
   def update
     @warehouse = Warehouse.find(params[:id])
-
-    puts '>>>>>>>>', warehouse_params
-    puts '>>>>>>>>'
     @warehouse.update(warehouse_params)
       respond_to do |format|
         format.html
@@ -44,7 +46,6 @@ class WarehouseController < ApplicationController
 
   def destroy
     @warehouse = Warehouse.find(params[:id]).destroy
-    puts '>>>>>>>>', @warehouse
     respond_to do |format|
       format.html
       format.json { render json: @warehouse }

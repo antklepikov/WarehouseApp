@@ -5,25 +5,44 @@ import axios from 'axios';
 import {map, without, find} from 'lodash';
 // Components
 import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
-import {UpdateWarehouseModal} from './UpdateWarehouseModal'
+import ReactPaginate from 'react-paginate';
+import Routes from '../../routes.js'
 
-const ShowWarehouses = () => {
+
+const ShowWarehouses = ({totalPages}) => {
 
     const [list, setList] = useState([]);
+    const [page, setPage] = useState(0);
+
+    // useEffect(() => {
+    //     axios.get("/warehouse", {
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json; charset=utf-8'
+    //         }
+    //     })
+    //         .then( (result) => {
+    //             setList(result.data);
+    //         })
+    //         .catch( (error) => {
+    //             console.log(error)
+    //         });
+    // }, []);
+
     useEffect(() => {
-        axios.get("/warehouse", {
+        axios.get(Routes.warehouse_path(), {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8'
+            },
+            params: {
+                page: page
             }
         })
-            .then( (result) => {
-                setList(result.data);
-            })
-            .catch( (error) => {
-                console.log(error)
+            .then((response) => {
+                setList(response.data);
             });
-    }, []);
+    }, [page]);
 
     const deleteWarehouse = (id) => {
         axios.delete(`/warehouse/${id}`)
@@ -37,7 +56,14 @@ const ShowWarehouses = () => {
                 console.log(error)
             })
     };
-
+    const onChangePage = ({selected}) => {
+        const pageToGo = selected + 1;
+        console.log("pageToGo", pageToGo)
+        if (pageToGo !== page) {
+            setPage(pageToGo);
+            console.log("page", page);
+        }
+    };
     return (
         <div className="container warehouse">
             <div className="main">
@@ -57,6 +83,7 @@ const ShowWarehouses = () => {
                     </thead>
                     <tbody>
                     {map(list, (listElement, key) => {
+
                         return (
                             <tr key={`listElement-${listElement.id}-${key}`}>
                                 <th scope="row">{key + 1}</th>
@@ -80,6 +107,20 @@ const ShowWarehouses = () => {
                     }
                     </tbody>
                 </table>
+                <ReactPaginate
+                    previousLabel={'previous'}
+                    nextLabel={'next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
+                    pageCount={totalPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={2}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    onPageChange={onChangePage}
+                    hrefBuilder={(page) => Routes.warehouse_path({page})}
+                />
             </div>
         </div>
     );

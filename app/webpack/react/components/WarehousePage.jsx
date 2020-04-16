@@ -6,10 +6,15 @@ import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
 import {map, without, find} from 'lodash';
 import concat from 'lodash/concat';
 import WarehouseOrderModal from "./WarehouseOrderModal";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 const WarehousePage =({warehouse, products, order}) => {
 
     const [productData, setProductData] = useState({title: '', products_count: ''});
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggle = () => setDropdownOpen(prevState => !prevState);
 
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
@@ -65,7 +70,21 @@ const WarehousePage =({warehouse, products, order}) => {
                     </div>
                 </div>
                 <UpdateWarehouseModal warehouse={warehouse}/>
-                <WarehouseOrderModal order={order}/>
+
+                <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                    <DropdownToggle caret>
+                        Orders
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        {map(order,(orderItem, key) => {
+                            console.log('orderItem', orderItem)
+                            return (
+                                <DropdownItem key={key}>{orderItem.count}</DropdownItem>
+                            )
+                        })}
+                    </DropdownMenu>
+                </Dropdown>
+
                 <div className="ml-auto text-center">
                     Add new product:
                     <div className="mb-2">
