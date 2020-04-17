@@ -58,10 +58,8 @@ const ShowWarehouses = ({totalPages}) => {
     };
     const onChangePage = ({selected}) => {
         const pageToGo = selected + 1;
-        console.log("pageToGo", pageToGo)
         if (pageToGo !== page) {
             setPage(pageToGo);
-            console.log("page", page);
         }
     };
     return (
@@ -108,14 +106,31 @@ const ShowWarehouses = ({totalPages}) => {
                     </tbody>
                 </table>
                 <ReactPaginate
-                    previousLabel={'previous'}
-                    nextLabel={'next'}
-                    breakLabel={'...'}
+                    previousLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">
+                                {'<'}
+                            </div>
+                        </div>
+                    }
+                    nextLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">
+                                {'>'}
+                            </div>
+                        </div>
+                    }
+                    breakLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">...</div>
+                        </div>
+                    }
+                    pageClassName='page-item page-link '
                     breakClassName={'break-me'}
                     pageCount={totalPages}
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={2}
-                    containerClassName={'pagination'}
+                    containerClassName={'pagination justify-content-center'}
                     subContainerClassName={'pages pagination'}
                     activeClassName={'active'}
                     onPageChange={onChangePage}

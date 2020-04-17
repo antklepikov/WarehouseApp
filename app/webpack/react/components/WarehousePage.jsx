@@ -4,17 +4,39 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
 import {map, without, find} from 'lodash';
-import concat from 'lodash/concat';
-import WarehouseOrderModal from "./WarehouseOrderModal";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import DropdownItemOrder from "./DropdownItemOrder";
+import Routes from "../../routes";
+import ReactPaginate from 'react-paginate';
 
-const WarehousePage =({warehouse, products, order}) => {
+
+const WarehousePage =({warehouse, order, productsOrder}) => {
 
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [page, setPage] = useState(0);
+    const [products, setProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(0)
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
+
+    useEffect(() => {
+        axios.get(`/warehouse/${warehouse.id}/product`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            params: {
+                page: page,
+            }
+        })
+            .then((response) => {
+                console.log("response", response)
+                setProducts(response.data);
+                // setTotalPages(response.)
+            });
+    }, [page]);
 
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
@@ -33,19 +55,13 @@ const WarehousePage =({warehouse, products, order}) => {
                 console.log(result)
             })
     };
-    // const deleteProduct = (id) => {
-    //     console.log("product.id", products.id);
-    //     axios.delete(`/warehouse/${warehouse.id}/product/${id}`)
-    //         .then((result) => {
-    //             setProductData(without(productData, productData.find((productElement) => {
-    //                     return productElement.id === id;
-    //                 }
-    //             )));
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //         })
-    // };
+
+    const onChangePage = ({selected}) => {
+        const pageToGo = selected + 1;
+        if (pageToGo !== page) {
+            setPage(pageToGo);
+        }
+    };
     return (
         <div className='container'>
             <div className="d-flex">
@@ -71,15 +87,16 @@ const WarehousePage =({warehouse, products, order}) => {
                 </div>
                 <UpdateWarehouseModal warehouse={warehouse}/>
 
-                <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                <Dropdown className="ml-2 " isOpen={dropdownOpen} toggle={toggle}>
                     <DropdownToggle caret>
                         Orders
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(order,(orderItem, key) => {
-                            console.log('orderItem', orderItem)
                             return (
-                                <DropdownItem key={key}>{orderItem.count}</DropdownItem>
+                                <DropdownItem key={key}>
+                                    <DropdownItemOrder warehouse={warehouse} product={products} orderItem={orderItem} productsOrder={productsOrder}/>
+                                </DropdownItem>
                             )
                         })}
                     </DropdownMenu>
@@ -139,7 +156,37 @@ const WarehousePage =({warehouse, products, order}) => {
                     }
                 </tbody>
                 </table>
-
+                <ReactPaginate
+                    previousLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">
+                                {'<'}
+                            </div>
+                        </div>
+                    }
+                    nextLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">
+                                {'>'}
+                            </div>
+                        </div>
+                    }
+                    breakLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">...</div>
+                        </div>
+                    }
+                    pageClassName='page-item page-link '
+                    breakClassName={'break-me'}
+                    pageCount={totalPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={2}
+                    containerClassName={'pagination justify-content-center'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    onPageChange={onChangePage}
+                    hrefBuilder={()=>`/warehouse/${warehouse.id}/product`}
+                />
             </div>
         </div>
     )

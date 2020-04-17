@@ -5,21 +5,19 @@ class WarehouseController < ApplicationController
     puts "warehouses", params.inspect
     # @warehouses = current_user.warehouses.all
     respond_to do |format|
-          format.html
-          format.json {
-            render json: @warehouses,
-                   total_pages: @warehouses.total_pages
-          }
+      format.html
+      format.json {render json: @warehouses, total_pages: @warehouses.total_pages}
     end
   end
 
   def show
     @warehouse = Warehouse.find(params[:id])
     @order= Order.where(warehouse_id: @warehouse.id)
-    @products = Warehouse.find(params[:id]).products.all
+    @productsOrder = Product.joins(:orders)
+
     respond_to do |format|
       format.html
-      format.json { render json: @warehouse }
+      format.json { render json: @warehouse}
     end
   end
 
