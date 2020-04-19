@@ -11,7 +11,7 @@ import ReactPaginate from 'react-paginate';
 
 
 const WarehousePage =({warehouse, order, productsOrder}) => {
-
+    console.log("props", warehouse, order, productsOrder);
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -92,10 +92,14 @@ const WarehousePage =({warehouse, order, productsOrder}) => {
                         Orders
                     </DropdownToggle>
                     <DropdownMenu>
-                        {map(order,(orderItem, key) => {
+                        {map(productsOrder,(orderItem, key) => {
                             return (
-                                <DropdownItem key={key}>
-                                    <DropdownItemOrder warehouse={warehouse} product={products} orderItem={orderItem} productsOrder={productsOrder}/>
+                                <DropdownItem key={key} href="/store/:store_id/order/:id">
+                                    {/*<DropdownItemOrder warehouse={warehouse} product={products} orderItem={orderItem} productsOrder={productsOrder}/>*/}
+
+                                    <div key={key} className="d-flex">
+                                        <div className="mr-2">{orderItem.order.count}{orderItem.ordered_product[0].title}</div>
+                                    </div>
                                 </DropdownItem>
                             )
                         })}
