@@ -1,4 +1,11 @@
 class OrderController < ApplicationController
+  def show
+    # @productOrder =[]
+    @order = Order.find(params[:id])
+    @productOrder = Product.where(id: @order.product_id)
+    # @productOrder << {:order => @order, :ordered_product => Product.where(id: @order.product_id)}
+  end
+
   def create
     @order = Order.new(order_params)
 
@@ -8,6 +15,12 @@ class OrderController < ApplicationController
         format.json { render json: @order }
       end
     end
+  end
+
+  def update
+    @order =  Order.find(params[:id])
+    @order.update(status: params[:status])
+    @product = Product.find(id: @order.product_id)
   end
   private
   def order_params

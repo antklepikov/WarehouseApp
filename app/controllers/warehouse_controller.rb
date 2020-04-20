@@ -12,21 +12,13 @@ class WarehouseController < ApplicationController
 
   def show
     @warehouse = Warehouse.find(params[:id])
-    # @order= Order.where(warehouse_id: @warehouse.id)
-    # @productsOrder = Product.includes(:orders)
-    # @productsOrder = Order.where(warehouse_id: @warehouse.id).left_joins(:product)
-    # @productsOrder = Order.joins(:product)
-    # @order = Order.where(warehouse_id: params[:id])
-    @test_temp =[]
-    @order = Order.where(warehouse_id: @warehouse.id).each do |order|
-      # order.joins(Product.where(id: order.product_id))
-      # Product.where(id: order.product_id).inspect
+    @productsCount = ProductsWarehouse.where(warehouse_id: @warehouse.id).pluck(:products_count)
 
-      @test_temp << {:order => order, :ordered_product => Product.where(id: order.product_id)}
-      # order.write_attribute(:ordered_product, Product.where(id: order.product_id))
-      # order.ordered_product = product
+    puts "@productsCount", @productsCount.inspect
+    @productsOrder =[]
+    @order = Order.where(warehouse_id: @warehouse.id).each do |order|
+      @productsOrder << {:order => order, :ordered_product => Product.where(id: order.product_id), productsCount: ProductsWarehouse.where(product_id: order.product_id).pluck(:products_count)}
     end
-    puts "@productsOrder", @order.inspect
 
     respond_to do |format|
       format.html

@@ -2,23 +2,19 @@
 import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
-import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
+import UpdateWarehouseModal from "./UpdateWarehouseModal";
 import {map, without, find} from 'lodash';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import DropdownItemOrder from "./DropdownItemOrder";
-import Routes from "../../routes";
 import ReactPaginate from 'react-paginate';
 
 
-const WarehousePage =({warehouse, order, productsOrder}) => {
-    console.log("props", warehouse, order, productsOrder);
+const WarehousePage =({warehouse, productsOrder, productsCount}) => {
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
-
     const toggle = () => setDropdownOpen(prevState => !prevState);
 
     useEffect(() => {
@@ -32,7 +28,6 @@ const WarehousePage =({warehouse, order, productsOrder}) => {
             }
         })
             .then((response) => {
-                console.log("response", response)
                 setProducts(response.data);
                 // setTotalPages(response.)
             });
@@ -92,16 +87,37 @@ const WarehousePage =({warehouse, order, productsOrder}) => {
                         Orders
                     </DropdownToggle>
                     <DropdownMenu>
-                        {map(productsOrder,(orderItem, key) => {
-                            return (
-                                <DropdownItem key={key} href="/store/:store_id/order/:id">
-                                    {/*<DropdownItemOrder warehouse={warehouse} product={products} orderItem={orderItem} productsOrder={productsOrder}/>*/}
+                        {map(productsOrder, (orderItem, key) => {
+                            console.log("orderItem", orderItem)
+                            if (orderItem.order.count > 1) {
+                                return (
+                                    <DropdownItem key={key} className="p-0" href={`/store/${orderItem.order.store_id}/order/${orderItem.order.id}`}>
+                                        <div className="d-flex">
+                                            <div className="mr-2 col-6 "><small>Title:</small>
+                                                <p className="font-italic">{orderItem.ordered_product[0].title}</p>
+                                            </div>
+                                            <div className="mr-2 col-6 "><small>Count:</small>
+                                                <p className="font-italic">{orderItem.order.count}</p>
+                                            </div>
+                                            <p>and more...</p>
+                                        </div>
+                                    </DropdownItem>
+                                )
+                            } else {
+                                return (
+                                    <DropdownItem key={key} href={`/order/${orderItem.order.id}`}>
+                                        <div className="d-flex">
+                                            <div className="mr-2 col-6 "><small>Title:</small>
+                                                <p className="font-italic">{orderItem.ordered_product[0].title}</p>
+                                            </div>
+                                            <div className="mr-2 col-6 "><small>Count:</small>
+                                                <p className="font-italic">{orderItem.order.count}</p>
+                                            </div>
+                                        </div>
+                                    </DropdownItem>
+                                )
+                            }
 
-                                    <div key={key} className="d-flex">
-                                        <div className="mr-2">{orderItem.order.count}{orderItem.ordered_product[0].title}</div>
-                                    </div>
-                                </DropdownItem>
-                            )
                         })}
                     </DropdownMenu>
                 </Dropdown>

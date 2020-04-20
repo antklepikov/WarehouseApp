@@ -15,7 +15,7 @@ class ProductController < ApplicationController
     @warehouse = Warehouse.find(params[:warehouse_id])
     @product = Product.new(products_params)
     @product.save
-    @warehouseProduct = ProductsWarehouse.new(warehouse_id: @warehouse.id, product_id: @product.id).save
+    @warehouseProduct = ProductsWarehouse.new(warehouse_id: @warehouse.id, product_id: @product.id, products_count: params[:products_count]).save
     respond_to do |format|
       format.html
       format.json { render json: @product }

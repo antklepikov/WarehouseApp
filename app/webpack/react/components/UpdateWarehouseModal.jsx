@@ -67,7 +67,7 @@ const UpdateWarehouseModal = ({className, warehouse, list}) => {
 
 
 };
-export {UpdateWarehouseModal}
+export default UpdateWarehouseModal
 
 
 

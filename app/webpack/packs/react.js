@@ -6,6 +6,7 @@ import ShowWarehouses from "../react/components/ShowWarehouses";
 import WarehousePage from "../react/components/WarehousePage"
 import ShowStores from "../react/components/ShowStores";
 import StorePage from "../react/components/StorePage";
+import ShowOrder from "../react/components/ShowOrder";
 ReactOnRails.register({
     MainHeader,
     Welcome,
@@ -13,4 +14,5 @@ ReactOnRails.register({
     WarehousePage,
     ShowStores,
     StorePage,
+    ShowOrder,
 });

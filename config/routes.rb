@@ -10,8 +10,7 @@ Rails.application.routes.draw do
 
   resources :store
 
-  resources :store do
-    resources :order
-  end
+  resources :store
+  resources :order
   root "home#index"
 end
