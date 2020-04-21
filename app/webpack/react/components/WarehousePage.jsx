@@ -37,7 +37,6 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
             product: {
                 title: productData.title,
-                products_count: productData.products_count
             },
         }, {
             headers: ReactOnRails.authenticityHeaders()
@@ -164,7 +163,6 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                                         {productItem.title}
                                     </td>
                                     <td>
-                                        {productItem.products_count}
                                     </td>
 
                                 </tr>
@@ -176,38 +174,39 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                     }
                 </tbody>
                 </table>
-                <ReactPaginate
-                    previousLabel={
-                        <div className="page-item d-flex justify-content-center">
-                            <div className="page-link">
-                                {'<'}
-                            </div>
-                        </div>
-                    }
-                    nextLabel={
-                        <div className="page-item d-flex justify-content-center">
-                            <div className="page-link">
-                                {'>'}
-                            </div>
-                        </div>
-                    }
-                    breakLabel={
-                        <div className="page-item d-flex justify-content-center">
-                            <div className="page-link">...</div>
-                        </div>
-                    }
-                    pageClassName='page-item page-link '
-                    breakClassName={'break-me'}
-                    pageCount={totalPages}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={2}
-                    containerClassName={'pagination justify-content-center'}
-                    subContainerClassName={'pages pagination'}
-                    activeClassName={'active'}
-                    onPageChange={onChangePage}
-                    hrefBuilder={()=>`/warehouse/${warehouse.id}/product`}
-                />
+
             </div>
+            <ReactPaginate
+                previousLabel={
+                    <div className="page-item d-flex justify-content-center">
+                        <div className="page-link">
+                            {'<'}
+                        </div>
+                    </div>
+                }
+                nextLabel={
+                    <div className="page-item d-flex justify-content-center">
+                        <div className="page-link">
+                            {'>'}
+                        </div>
+                    </div>
+                }
+                breakLabel={
+                    <div className="page-item d-flex justify-content-center">
+                        <div className="page-link">...</div>
+                    </div>
+                }
+                pageClassName='page-item page-link '
+                breakClassName={'break-me'}
+                pageCount={totalPages}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={2}
+                containerClassName={'pagination justify-content-center'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+                onPageChange={onChangePage}
+                hrefBuilder={()=>`/warehouse/${warehouse.id}/product`}
+            />
         </div>
     )
 };

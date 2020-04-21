@@ -12,11 +12,12 @@ class WarehouseController < ApplicationController
 
   def show
     @warehouse = Warehouse.find(params[:id])
+
     @productsCount = ProductsWarehouse.where(warehouse_id: @warehouse.id).pluck(:products_count)
 
     puts "@productsCount", @productsCount.inspect
     @productsOrder =[]
-    @order = Order.where(warehouse_id: @warehouse.id).each do |order|
+    @order = Order.where(warehouse_id: @warehouse.id, status: 0).each do |order|
       @productsOrder << {:order => order, :ordered_product => Product.where(id: order.product_id), productsCount: ProductsWarehouse.where(product_id: order.product_id).pluck(:products_count)}
     end
 

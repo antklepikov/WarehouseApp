@@ -6,8 +6,8 @@ import {map, without, find} from 'lodash';
 import concat from 'lodash/concat';
 import NewOrderModal from '../components/NewOrderModal'
 
-const StorePage = ({store, warehouses}) => {
-
+const StorePage = ({store, warehouses, productsCount, xd}) => {
+console.log("xd", xd)
   return (
       <div className = "container">
           <div className="font-weight-bold">
@@ -17,7 +17,7 @@ const StorePage = ({store, warehouses}) => {
               </h4>
 
           </div>
-          <NewOrderModal buttonLabel="Add order" warehouses={warehouses} store={store}/>
+          <NewOrderModal buttonLabel="Add order" warehouses={warehouses} store={store} productsCount={xd}/>
           <div className = "mt-2">
               Products in this store:
           </div>

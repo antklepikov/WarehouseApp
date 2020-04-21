@@ -4,7 +4,7 @@ import axios from 'axios'
 import {map, without, find} from 'lodash';
 import Select from 'react-select'
 
-const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
+const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount}) => {
     const [modal, setModal] = useState(false);
     const [productsList, setProductsList] = useState([]);
     const [currentWarehouse, setCurrentWarehouse] = useState({});
@@ -43,14 +43,7 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
     };
 
     const productOrder = () => {
-        // axios.put(`/warehouse/${currentWarehouse.id}/product/${currentProduct.id}`, {product: {productCountOrder}})
-        //     .then((result) => {
-        //         console.log('SUCCESS', result);
-        //     })
-        //     .catch((error) => {
-        //         console.log('ERROR', error)
-        //     })
-        axios.post(`/store/${store.id}/order`, {
+        axios.post(`/order`, {
             orders: {
                 count: productCountOrder,
                 warehouse_id: currentWarehouse.id,
@@ -68,10 +61,13 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
 
     const saveProduct = (product) => {
         setCurrentProduct(product.value)
-    }
+    };
 
     const verifyCount = (e) => {
         setProductCountOrder(e.target.value);
+
+        console.log('currentProduct', currentProduct);
+        xd.map
         if (e.target.value > currentProduct.products_count) {
             setVisible(true);
         }
