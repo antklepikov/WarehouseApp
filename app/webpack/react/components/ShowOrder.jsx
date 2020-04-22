@@ -3,7 +3,7 @@ import axios from 'axios'
 import {map, without, find} from 'lodash';
 
 const ShowOrder = ({productOrder, order}) => {
-
+    console.log("order", order)
     const approveOrder = () => {
         axios.put(`/order/${order.id}`, {status: 1})
             .then((result)=>{
@@ -11,6 +11,10 @@ const ShowOrder = ({productOrder, order}) => {
             })
             .catch((error)=>{
                 console.log(error);
+            })
+        axios.get(`/store/${order.store_id}`, {order: {order}})
+            .then((res)=>{
+                console.log(res)
             })
     }
     const declineOrder = () => {

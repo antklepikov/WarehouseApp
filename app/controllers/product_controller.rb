@@ -21,6 +21,7 @@ class ProductController < ApplicationController
       format.json { render json: @product }
     end
   end
+
   def update
     @product = Product.find(params[:id])
     puts "product", @product

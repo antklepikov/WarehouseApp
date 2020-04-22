@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Alert} from 'reactstrap';
 import axios from 'axios'
-import {map, without, find} from 'lodash';
+import {map, without, find, forEach} from 'lodash';
 import Select from 'react-select'
 
 const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount}) => {
@@ -14,10 +14,11 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount
 
     const toggle = () => setModal(!modal);
 
-    const warehouseList = map(warehouses, (warehouse) => {
+    const warehouseList = map(productsCount, (warehouse) => {
         return (
-            {value: warehouse, label: warehouse.title}
+            {value: warehouse.warehouse,  label: warehouse.warehouse.title}
         )
+
     })
     const productListOptions = map(productsList, (product) => {
         return (
@@ -65,9 +66,6 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount
 
     const verifyCount = (e) => {
         setProductCountOrder(e.target.value);
-
-        console.log('currentProduct', currentProduct);
-        xd.map
         if (e.target.value > currentProduct.products_count) {
             setVisible(true);
         }

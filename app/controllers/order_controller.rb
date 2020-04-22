@@ -21,8 +21,12 @@ class OrderController < ApplicationController
 
   def update
     @order =  Order.find(params[:id])
+
     @order.update(status: params[:status])
-    @product = Product.find(id: @order.product_id)
+    @product = ProductsWarehouse.find_by(product_id: @order.product_id)
+
+    @product.update(products_count: @product.products_count - @order.count)
+
   end
   private
   def order_params

@@ -8,9 +8,10 @@ Rails.application.routes.draw do
     resources :product
   end
 
-  resources :store
+  resources :store do
+    resources :product
+  end
 
-  resources :store
   resources :order
   root "home#index"
 end
