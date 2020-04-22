@@ -9,6 +9,7 @@ import ReactPaginate from 'react-paginate';
 
 
 const WarehousePage =({warehouse, productsOrder, productsCount}) => {
+
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -28,8 +29,8 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
             }
         })
             .then((response) => {
-                setProducts(response.data);
-                // setTotalPages(response.)
+                setProducts(response.data.products);
+                setTotalPages(response.data.total_pages)
             });
     }, [page]);
 
@@ -87,7 +88,6 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(productsOrder, (orderItem, key) => {
-                            console.log("orderItem", orderItem)
                             if (orderItem.order.count > 1) {
                                 return (
                                     <DropdownItem key={key} className="p-0" href={`/store/${orderItem.order.store_id}/order/${orderItem.order.id}`}>
@@ -196,7 +196,7 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                         <div className="page-link">...</div>
                     </div>
                 }
-                pageClassName='page-item page-link '
+                pageClassName='page-item page-link'
                 breakClassName={'break-me'}
                 pageCount={totalPages}
                 marginPagesDisplayed={2}

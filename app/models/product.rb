@@ -4,5 +4,5 @@ class Product < ApplicationRecord
   has_many :products_warehouses, dependent: :destroy
   has_many :warehouses, through: :products_warehouses, dependent: :destroy
 
-  paginates_per 3
+  paginates_per 5
 end

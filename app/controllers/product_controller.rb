@@ -3,12 +3,16 @@ class ProductController < ApplicationController
   def index
     @products = Warehouse.find(params[:warehouse_id]).products.all.page(params[:page])
     puts "products pages", @products.total_pages
-    respond_to do |format|
-      format.json do
-        render json: @products,
-               meta: {total_pages: @products.total_pages}
-      end
-    end
+    # respond_to do |format|
+    #   # format.json
+    #   #   {render json: @products, total_pages: @products.total_pages}
+    #   format.html
+    #   format.json {render json: @products, meta : {total_pages: @products.total_pages}}
+    # end
+    render json: {
+        products: @products,
+        total_pages: @products.total_pages
+    }
   end
 
   def create
