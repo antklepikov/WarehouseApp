@@ -10,21 +10,19 @@ class StoreController < ApplicationController
   end
 
   def show
-    @warehouses = current_user.warehouses.all
-
-    @productsCount = []
+    @productsCount=[]
     @warehouses = current_user.warehouses.each do |warehouse|
-      @productsCount << {:warehouse => warehouse, :productWarehouseCount => ProductsWarehouse.where(warehouse_id: warehouse.id).map{|i|{id:i.id,products_count:i.products_count} }}
+      @productsCount << {productsCount: ProductsWarehouse.where(warehouse_id: warehouse.id).map{|item|{product_id:item.product_id,products_count:item.products_count}}}
     end
+    puts "productsCount", @productsCount.inspect
     @store = Store.find(params[:id])
     # @xd  = ActiveModel::Serializer::CollectionSerializer.new(current_user.warehouses.last, serializer: UserWarehouseProductsCountSerializer)]
     # @xd  = UserWarehouseProductsCountSerializer.new(current_user.warehouses)
     # @xd  = ActiveModelSerializers::SerializableResource.new(Warehouse.all,
-    #                                                   serializer: UserWarehouseProductsCountSerializer)
-    @orders = Order.where(store_id: @store.id, status: 1).each do |order|
-      @products = Product.where(id: order.product_id)
-      puts "a;owdvjaowvh", @products.inspect
-    end
+    #                                                 serializer: UserWarehouseProductsCountSerializer)
+
+
+    @productsInStores =@store.orders.map{|order|order.product}
 
 
     respond_to do |format|

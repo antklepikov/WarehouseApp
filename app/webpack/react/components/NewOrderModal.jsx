@@ -11,12 +11,11 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount
     const [currentProduct, setCurrentProduct] = useState({});
     const [productCountOrder, setProductCountOrder] = useState({});
     const [visible, setVisible] = useState(false)
-
     const toggle = () => setModal(!modal);
 
-    const warehouseList = map(productsCount, (warehouse) => {
+    const warehouseList = map(warehouses, (warehouse) => {
         return (
-            {value: warehouse.warehouse,  label: warehouse.warehouse.title}
+            {value: warehouse,  label: warehouse.title}
         )
 
     })
@@ -34,7 +33,8 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount
             }
         })
             .then((result) => {
-                setProductsList(result.data);
+                console.log("result", result.data)
+                setProductsList(result.data.products);
                 setCurrentWarehouse(warehouse.value);
 
             })

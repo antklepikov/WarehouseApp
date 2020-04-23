@@ -9,7 +9,7 @@ import ReactPaginate from 'react-paginate';
 
 
 const WarehousePage =({warehouse, productsOrder, productsCount}) => {
-
+    console.log("productsCount", productsCount)
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -153,7 +153,8 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                 <tbody>
 
                     {map(products, (productItem, key) => {
-                        if (productItem.products_count > 0) {
+                        console.log("productItem", productItem)
+                        // if (productItem.products_count > 0) {
                             return (
                                 <tr key={`productItem-${productItem.id}-${key}`}>
                                     <td>
@@ -163,11 +164,21 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                                         {productItem.title}
                                     </td>
                                     <td>
+                                        {map(productsCount,(productsCountItem, key) => {
+                                            console.log("productCountItem", productsCountItem)
+
+                                            if (productsCountItem.id ==productItem.id) {
+                                                return (
+                                                   <p key={key}>{productsCountItem.products_count}</p>
+                                                )
+                                            }
+
+                                        })}
                                     </td>
 
                                 </tr>
                             )
-                            }
+                            // }
 
                         }
                     )
