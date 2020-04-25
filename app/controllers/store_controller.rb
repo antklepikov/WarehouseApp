@@ -11,8 +11,14 @@ class StoreController < ApplicationController
 
   def show
     @productsCount=[]
+    # @warehouse = Warehouse.find(params[:id])
+    # @products = @warehouse.products.map do |product|
+    #   {productCount: ProductsWarehouse.where(product_id: product.id)}
+    # end
+
+
     @warehouses = current_user.warehouses.each do |warehouse|
-      @productsCount << {productsCount: ProductsWarehouse.where(warehouse_id: warehouse.id).map{|item|{product_id:item.product_id,products_count:item.products_count}}}
+      @productsCount << {productsCount: ProductsWarehouse.where(warehouse_id: warehouse.id)}
     end
     puts "productsCount", @productsCount.inspect
     @store = Store.find(params[:id])
@@ -22,7 +28,7 @@ class StoreController < ApplicationController
     #                                                 serializer: UserWarehouseProductsCountSerializer)
 
 
-    @productsInStores =@store.orders.map{|order|order.product}
+    @productsInStores = @store.orders.where(status: 1).map{|order|{product: order.product, count: order.count}}
 
 
     respond_to do |format|

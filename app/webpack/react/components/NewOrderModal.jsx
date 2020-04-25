@@ -4,12 +4,14 @@ import axios from 'axios'
 import {map, without, find, forEach} from 'lodash';
 import Select from 'react-select'
 
-const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount}) => {
+const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
+
     const [modal, setModal] = useState(false);
     const [productsList, setProductsList] = useState([]);
     const [currentWarehouse, setCurrentWarehouse] = useState({});
     const [currentProduct, setCurrentProduct] = useState({});
     const [productCountOrder, setProductCountOrder] = useState({});
+    const [currentCountProduct, setCurrentCountProduct] =useState(0)
     const [visible, setVisible] = useState(false)
     const toggle = () => setModal(!modal);
 
@@ -21,7 +23,7 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount
     })
     const productListOptions = map(productsList, (product) => {
         return (
-            {value: product, label: product.title}
+            {value: product.product,count: product.productCount, label: product.product.title}
         )
     })
 
@@ -61,12 +63,13 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store, productsCount
     };
 
     const saveProduct = (product) => {
-        setCurrentProduct(product.value)
+        setCurrentProduct(product.value);
+        setCurrentCountProduct(product.count);
     };
 
     const verifyCount = (e) => {
         setProductCountOrder(e.target.value);
-        if (e.target.value > currentProduct.products_count) {
+        if (e.target.value > currentCountProduct) {
             setVisible(true);
         }
         else{

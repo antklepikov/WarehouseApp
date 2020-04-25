@@ -10,7 +10,7 @@ class OrderController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-
+    @order.status = 0
     if @order.save
       respond_to do |format|
         format.html

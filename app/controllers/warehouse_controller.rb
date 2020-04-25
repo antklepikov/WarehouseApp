@@ -19,8 +19,18 @@ class WarehouseController < ApplicationController
     @productsOrder =[]
     @order = Order.where(warehouse_id: @warehouse.id, status: 0).each do |order|
       @productsOrder << {:order => order, :ordered_product => Product.where(id: order.product_id), productsCount: ProductsWarehouse.where(product_id: order.product_id)}
-    end
 
+    end
+    # # @stores =Store.joins(:orders).order(:warehouse_id)
+
+    # @ordersForOftenStores = Order.where(warehouse_id: @warehouse.id).order(:store_id).each do |order|
+    #   puts "orders", order.inspect
+    #   @stores = Store.where(id: order.product_id)
+    #   # puts "stores", @stores.inspect
+    # end
+    # @stores = Store.orders.where(warehouse_id: @warehouse.id)
+
+    puts"@@stores", @stores.inspect
     respond_to do |format|
       format.html
       format.json { render json: @warehouse}

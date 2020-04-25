@@ -9,7 +9,6 @@ import ReactPaginate from 'react-paginate';
 
 
 const WarehousePage =({warehouse, productsOrder, productsCount}) => {
-    console.log("productsCount", productsCount)
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -17,7 +16,6 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
     const toggle = () => setDropdownOpen(prevState => !prevState);
-
     useEffect(() => {
         axios.get(`/warehouse/${warehouse.id}/product`, {
             headers: {
@@ -90,7 +88,7 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                         {map(productsOrder, (orderItem, key) => {
                             if (orderItem.order.count > 1) {
                                 return (
-                                    <DropdownItem key={key} className="p-0" href={`/store/${orderItem.order.store_id}/order/${orderItem.order.id}`}>
+                                    <DropdownItem key={key} className="p-0" href={`/order/${orderItem.order.id}`}>
                                         <div className="d-flex">
                                             <div className="mr-2 col-6 "><small>Title:</small>
                                                 <p className="font-italic">{orderItem.ordered_product[0].title}</p>
@@ -153,27 +151,17 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                 <tbody>
 
                     {map(products, (productItem, key) => {
-                        console.log("productItem", productItem)
                         // if (productItem.products_count > 0) {
                             return (
-                                <tr key={`productItem-${productItem.id}-${key}`}>
+                                <tr key={`productItem-${productItem.product.id}-${key}`}>
                                     <td>
                                         {key + 1})
                                     </td>
                                     <td>
-                                        {productItem.title}
+                                        {productItem.product.title}
                                     </td>
                                     <td>
-                                        {map(productsCount,(productsCountItem, key) => {
-                                            console.log("productCountItem", productsCountItem)
-
-                                            if (productsCountItem.id ==productItem.id) {
-                                                return (
-                                                   <p key={key}>{productsCountItem.products_count}</p>
-                                                )
-                                            }
-
-                                        })}
+                                        {productItem.productCount}
                                     </td>
 
                                 </tr>

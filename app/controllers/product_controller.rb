@@ -1,11 +1,12 @@
 class ProductController < ApplicationController
 
   def index
-    @products = Warehouse.find(params[:warehouse_id]).products.page(params[:page]).per(params[:page] ? 5 : -1)
-
+    @productsWarehouse = ProductsWarehouse.where(warehouse_id: params[:warehouse_id]).page(params[:page]).per(params[:page] ? 5 : 1000)
+    @products=@productsWarehouse.map{|productWarehouse|
+      {product: productWarehouse.product, productCount: productWarehouse.products_count}}
     render json: {
         products: @products,
-        total_pages: @products.total_pages
+        total_pages: @productsWarehouse.total_pages
     }
   end
 

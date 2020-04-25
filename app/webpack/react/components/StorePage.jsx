@@ -6,8 +6,7 @@ import {map, without, find} from 'lodash';
 import concat from 'lodash/concat';
 import NewOrderModal from '../components/NewOrderModal'
 
-const StorePage = ({store, warehouses, productsCount, productsInStores, productsCountInStores}) => {
-    console.log("productsInStores", productsInStores)
+const StorePage = ({store, warehouses, productsCount, productsInStores}) => {
     return (
         <div className="container">
             <div className="font-weight-bold">
@@ -23,8 +22,8 @@ const StorePage = ({store, warehouses, productsCount, productsInStores, products
                 {map(productsInStores, (productsStore, key) => {
                     return (
                         <div key={key}>
-                            <p>{productsStore.title}</p>
-
+                            <p>{productsStore.product.title}</p>
+                            <p>{productsStore.count}</p>
                         </div>
                     )
                 })}
