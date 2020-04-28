@@ -8,7 +8,7 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 import ReactPaginate from 'react-paginate';
 
 
-const WarehousePage =({warehouse, productsOrder, productsCount}) => {
+const WarehousePage =({warehouse,  stores, order}) => {
     const [productData, setProductData] = useState({title: '', products_count: ''});
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -16,6 +16,7 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
     const toggle = () => setDropdownOpen(prevState => !prevState);
+
     useEffect(() => {
         axios.get(`/warehouse/${warehouse.id}/product`, {
             headers: {
@@ -85,13 +86,13 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                         Orders
                     </DropdownToggle>
                     <DropdownMenu>
-                        {map(productsOrder, (orderItem, key) => {
+                        {map(order, (orderItem, key) => {
                             if (orderItem.order.count > 1) {
                                 return (
                                     <DropdownItem key={key} className="p-0" href={`/order/${orderItem.order.id}`}>
                                         <div className="d-flex">
                                             <div className="mr-2 col-6 "><small>Title:</small>
-                                                <p className="font-italic">{orderItem.ordered_product[0].title}</p>
+                                                <p className="font-italic">{orderItem.orderedProduct.title}</p>
                                             </div>
                                             <div className="mr-2 col-6 "><small>Count:</small>
                                                 <p className="font-italic">{orderItem.order.count}</p>
@@ -105,7 +106,7 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                                     <DropdownItem key={key} href={`/order/${orderItem.order.id}`}>
                                         <div className="d-flex">
                                             <div className="mr-2 col-6 "><small>Title:</small>
-                                                <p className="font-italic">{orderItem.ordered_product[0].title}</p>
+                                                <p className="font-italic">{orderItem.orderedProduct.title}</p>
                                             </div>
                                             <div className="mr-2 col-6 "><small>Count:</small>
                                                 <p className="font-italic">{orderItem.order.count}</p>
@@ -151,7 +152,7 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
                 <tbody>
 
                     {map(products, (productItem, key) => {
-                        // if (productItem.products_count > 0) {
+
                             return (
                                 <tr key={`productItem-${productItem.product.id}-${key}`}>
                                     <td>
@@ -166,8 +167,6 @@ const WarehousePage =({warehouse, productsOrder, productsCount}) => {
 
                                 </tr>
                             )
-                            // }
-
                         }
                     )
                     }

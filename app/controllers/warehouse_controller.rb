@@ -2,8 +2,6 @@ class WarehouseController < ApplicationController
 
   def index
     @warehouses = current_user.warehouses.all.page(params[:page])
-    puts "warehouses", params.inspect
-    # @warehouses = current_user.warehouses.all
     respond_to do |format|
       format.html
       format.json {render json: @warehouses, total_pages: @warehouses.total_pages}
@@ -11,29 +9,20 @@ class WarehouseController < ApplicationController
   end
 
   def show
+
     @warehouse = Warehouse.find(params[:id])
-
     @productsCount = ProductsWarehouse.where(warehouse_id: @warehouse.id).map{|item|{id:item.product_id,products_count:item.products_count} }
+    @order = Order.where(warehouse_id: @warehouse.id)
 
-    puts "@productsCount", @productsCount.inspect
-    @productsOrder =[]
-    @order = Order.where(warehouse_id: @warehouse.id, status: 0).each do |order|
-      @productsOrder << {:order => order, :ordered_product => Product.where(id: order.product_id), productsCount: ProductsWarehouse.where(product_id: order.product_id)}
+    @orderInWarehouse = @order.where(status: 0).map{|order|
+      {order: order, orderedProduct: order.product }}
 
-    end
-    # # @stores =Store.joins(:orders).order(:warehouse_id)
-
-    # @ordersForOftenStores = Order.where(warehouse_id: @warehouse.id).order(:store_id).each do |order|
-    #   puts "orders", order.inspect
-    #   @stores = Store.where(id: order.product_id)
-    #   # puts "stores", @stores.inspect
-    # end
-    # @stores = Store.orders.where(warehouse_id: @warehouse.id)
-
-    puts"@@stores", @stores.inspect
+    @stores = Order.where(warehouse_id: @warehouse.id,store: current_user.stores).map{|i|i.store}.map{|store|
+      {store: store, countHold: @order.where(store_id: store.id).count}
+    }.uniq
     respond_to do |format|
       format.html
-      format.json { render json: @warehouse}
+      format.json { render json: {warehouse: @warehouse}}
     end
   end
 

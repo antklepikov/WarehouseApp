@@ -1,16 +1,11 @@
 class OrderController < ApplicationController
   def show
-    @productOrder =[]
     @order = Order.find(params[:id])
-
-    # @productOrder = Product.where(id: @order.product_id)
-
-    @productOrder << {:ordered_product => Product.where(id: @order.product_id),productsCount: ProductsWarehouse.where(product_id: @order.product_id).pluck(:products_count) }
+    @productOrder = {orderedProduct:  @order.product, productsCount: ProductsWarehouse.find_by(product_id: @order.product_id) }
   end
 
   def create
     @order = Order.new(order_params)
-    @order.status = 0
     if @order.save
       respond_to do |format|
         format.html
