@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
-import {map, without, find} from 'lodash';
+import map from 'lodash/map';
 // Components
 import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
 
@@ -44,7 +44,7 @@ const ShowStores = ({stores}) => {
                           <tr key={`storeItem-${storeItem.id}-${key}`}>
                               <td>{key}</td>
                               <td>{storeItem.title}</td>
-                              <td><a className="btn btn-light" type="button" href={`/store/${storeItem.id}`}>Show {storeItem.title}</a></td>
+                              <td><a className="btn font-weight-bold btn-light" type="button" href={`/store/${storeItem.id}`}>Show {storeItem.title}</a></td>
                           </tr>
                       );
                   }

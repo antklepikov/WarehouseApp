@@ -2,7 +2,9 @@
 import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
-import {map, without, find} from 'lodash';
+import map from 'lodash/map';
+import without from 'lodash/without';
+
 // Components
 import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
 import ReactPaginate from 'react-paginate';
@@ -13,21 +15,6 @@ const ShowWarehouses = ({totalPages}) => {
 
     const [list, setList] = useState([]);
     const [page, setPage] = useState(0);
-
-    // useEffect(() => {
-    //     axios.get("/warehouse", {
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json; charset=utf-8'
-    //         }
-    //     })
-    //         .then( (result) => {
-    //             setList(result.data);
-    //         })
-    //         .catch( (error) => {
-    //             console.log(error)
-    //         });
-    // }, []);
 
     useEffect(() => {
         axios.get(Routes.warehouse_path(), {
@@ -89,7 +76,7 @@ const ShowWarehouses = ({totalPages}) => {
                                 <td>{listElement.number}</td>
                                 <td>{listElement.address}</td>
                                 <td>
-                                    <a className="btn btn-light" type="button"
+                                    <a className="btn btn-light font-weight-bold" type="button"
                                        href={`/warehouse/${listElement.id}`}>Show {listElement.title}</a>
                                 </td>
                                 <td>

@@ -17,9 +17,10 @@ class WarehouseController < ApplicationController
     @orderInWarehouse = @order.where(status: 0).map{|order|
       {order: order, orderedProduct: order.product }}
 
-    @stores = Order.where(warehouse_id: @warehouse.id,store: current_user.stores).map{|i|i.store}.map{|store|
+    @stores = Order.limit(6).where(warehouse_id: @warehouse.id,store: current_user.stores).map{|order|order.store}.map{|store|
       {store: store, countHold: @order.where(store_id: store.id).count}
-    }.uniq
+    }.uniq.sort_by {|sort| -sort[:countHold]}
+
     respond_to do |format|
       format.html
       format.json { render json: {warehouse: @warehouse}}

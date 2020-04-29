@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Alert} from 'reactstrap';
 import axios from 'axios'
-import {map, without, find, forEach} from 'lodash';
+import map from 'lodash/map';
 import Select from 'react-select'
 
 const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {

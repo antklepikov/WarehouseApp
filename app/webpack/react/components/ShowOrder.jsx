@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios'
-import {map, without, find} from 'lodash';
 
 const ShowOrder = ({productOrder, order}) => {
 

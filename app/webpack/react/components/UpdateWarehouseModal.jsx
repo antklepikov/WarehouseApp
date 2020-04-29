@@ -7,7 +7,6 @@ const UpdateWarehouseModal = ({className, warehouse, list}) => {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-    // const [updateData, setUpdateData] = useState({title: '', number: '', address: ''});
     const [updateData, setUpdateData] = useState({title: warehouse.title, number: warehouse.number, address: warehouse.address});
 
     const updateWarehouse = () => {

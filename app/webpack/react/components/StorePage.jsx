@@ -1,9 +1,8 @@
 // React Core
 import React, {useState, useEffect} from 'react';
 // Libs
-import axios from 'axios';
-import {map, without, find} from 'lodash';
-import concat from 'lodash/concat';
+import map from 'lodash/map';
+
 import NewOrderModal from '../components/NewOrderModal'
 
 const StorePage = ({store, warehouses, productsCount, productsInStores}) => {
@@ -18,15 +17,26 @@ const StorePage = ({store, warehouses, productsCount, productsInStores}) => {
             </div>
             <NewOrderModal buttonLabel="Add order" warehouses={warehouses} store={store} productsCount={productsCount}/>
             <div className="mt-2">
-                Products in this store:
-                {map(productsInStores, (productsStore, key) => {
-                    return (
-                        <div key={key}>
-                            <p>{productsStore.product.title}</p>
-                            <p>{productsStore.count}</p>
-                        </div>
-                    )
-                })}
+                <div className=''>Products in this store:</div>
+                <table className="table w-25 p-3">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Count in store</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {map(productsInStores, (productsStore, key) => {
+                            return (
+                                <tr key={key}>
+                                    <td>{productsStore.product.title}</td>
+                                    <td>{productsStore.count}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+
             </div>
         </div>
     );

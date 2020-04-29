@@ -3,19 +3,22 @@ import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
 import UpdateWarehouseModal from "./UpdateWarehouseModal";
-import {map, without, find} from 'lodash';
+import map from 'lodash/map';
+
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 
 
 const WarehousePage =({warehouse,  stores, order}) => {
     const [productData, setProductData] = useState({title: '', products_count: ''});
-
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [dropdownOpenOrder, setDropdownOpenOrder] = useState(false);
+    const [dropdownOpenStores, setDropdownOpenStores] = useState(false);
     const [page, setPage] = useState(0);
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
-    const toggle = () => setDropdownOpen(prevState => !prevState);
+    const dropdownOrder = () => setDropdownOpenOrder(prevState => !prevState);
+    const dropdownStores = () => setDropdownOpenStores(prevState => !prevState);
+
 
     useEffect(() => {
         axios.get(`/warehouse/${warehouse.id}/product`, {
@@ -81,8 +84,8 @@ const WarehousePage =({warehouse,  stores, order}) => {
                 </div>
                 <UpdateWarehouseModal warehouse={warehouse}/>
 
-                <Dropdown className="ml-2 " isOpen={dropdownOpen} toggle={toggle}>
-                    <DropdownToggle caret>
+                <Dropdown className="ml-3"  isOpen={dropdownOpenOrder} toggle={dropdownOrder}>
+                    <DropdownToggle color='warning' caret>
                         Orders
                     </DropdownToggle>
                     <DropdownMenu>
@@ -103,7 +106,7 @@ const WarehousePage =({warehouse,  stores, order}) => {
                                 )
                             } else {
                                 return (
-                                    <DropdownItem key={key} href={`/order/${orderItem.order.id}`}>
+                                    <DropdownItem key={key} className='p-0' href={`/order/${orderItem.order.id}`}>
                                         <div className="d-flex">
                                             <div className="mr-2 col-6 "><small>Title:</small>
                                                 <p className="font-italic">{orderItem.orderedProduct.title}</p>
@@ -119,6 +122,29 @@ const WarehousePage =({warehouse,  stores, order}) => {
                         })}
                     </DropdownMenu>
                 </Dropdown>
+
+                <Dropdown className="ml-3 " isOpen={dropdownOpenStores} toggle={dropdownStores}>
+                    <DropdownToggle caret>
+                        Frequently ordering stores
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        {map(stores, (storesElement, key) => {
+                            return (
+                                <DropdownItem key={key} className="" href={`/store/${storesElement.store.id}`}>
+                                    <div className="d-flex">
+                                        <div className="m-auto font-italic md-2">
+                                            {storesElement.store.title}
+                                        </div>
+                                    </div>
+                                </DropdownItem>
+                            )
+                        })
+
+                        }
+
+                    </DropdownMenu>
+                </Dropdown>
+
 
                 <div className="ml-auto text-center">
                     Add new product:
