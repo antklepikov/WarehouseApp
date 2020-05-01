@@ -18,18 +18,18 @@ const ShowWarehouses = ({totalPages}) => {
 
     useEffect(() => {
         axios.get(Routes.warehouse_path(), {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
-            },
-            params: {
-                page: page
-            }
-        })
-            .then((response) => {
-                setList(response.data);
-            });
-    }, [page]);
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        },
+        params: {
+            page: page
+        }
+    })
+        .then((response) => {
+            setList(response.data.warehouses);
+        });
+}, [page]);
 
     const deleteWarehouse = (id) => {
         axios.delete(`/warehouse/${id}`)

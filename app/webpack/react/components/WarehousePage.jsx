@@ -94,10 +94,12 @@ const WarehousePage =({warehouse,  stores, order}) => {
                                 return (
                                     <DropdownItem key={key} className="p-0" href={`/order/${orderItem.order.id}`}>
                                         <div className="d-flex">
-                                            <div className="mr-2 col-6 "><small>Title:</small>
+                                            <div className="mr-2 col-6">
+                                                <small>Title:</small>
                                                 <p className="font-italic">{orderItem.orderedProduct.title}</p>
                                             </div>
-                                            <div className="mr-2 col-6 "><small>Count:</small>
+                                            <div className="mr-2 col-6 border-left">
+                                                <small>Count:</small>
                                                 <p className="font-italic">{orderItem.order.count}</p>
                                             </div>
                                             <p>and more...</p>
@@ -108,10 +110,12 @@ const WarehousePage =({warehouse,  stores, order}) => {
                                 return (
                                     <DropdownItem key={key} className='p-0' href={`/order/${orderItem.order.id}`}>
                                         <div className="d-flex">
-                                            <div className="mr-2 col-6 "><small>Title:</small>
-                                                <p className="font-italic">{orderItem.orderedProduct.title}</p>
+                                            <div className="mr-2 col-6 ">
+                                                <small>Title:</small>
+                                                <div className="font-italic">{orderItem.orderedProduct.title}</div>
                                             </div>
-                                            <div className="mr-2 col-6 "><small>Count:</small>
+                                            <div className="mr-2 col-6 border-left ">
+                                                <small>Count:</small>
                                                 <p className="font-italic">{orderItem.order.count}</p>
                                             </div>
                                         </div>

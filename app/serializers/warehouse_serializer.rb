@@ -1,4 +1,4 @@
-class UserWarehouseProductsCountSerializer < BaseSerializer
+class WarehouseSerializer < BaseSerializer
 
   attributes *Warehouse.attribute_names.map(&:to_sym)
 

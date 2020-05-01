@@ -26,11 +26,11 @@ const AddNewWarehouseModal = (props) => {
             headers: ReactOnRails.authenticityHeaders()
         })
             .then((result) => {
-                console.log(result);
+                console.log("success",result);
                 setList(concat(list, result.data));
             })
-            .catch((result) => {
-                console.log(result)
+            .catch((error) => {
+                console.log("error", error);
             })
     };
     return (
