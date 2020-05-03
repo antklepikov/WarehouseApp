@@ -50,7 +50,7 @@ const ShowWarehouses = ({totalPages}) => {
         }
     };
     return (
-        <div className="container warehouse">
+        <div className="container">
             <div className="main">
                 <AddNewWarehouseModal buttonLabel="Add warehouse" setList={setList} list={list}/>
                 <h3>Your warehouses</h3>

@@ -1,8 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-
+import Button from 'reactstrap/es/Button'
+import Modal from 'reactstrap/es/Modal'
+import ModalHeader from 'reactstrap/es/ModalHeader'
+import ModalBody from 'reactstrap/es/ModalBody'
+import ModalFooter from 'reactstrap/es/ModalFooter'
 import axios from 'axios'
 import concat from 'lodash/concat';
+import forEach from 'lodash/forEach';
+import join from 'lodash/join';
 import ReactOnRails from 'react-on-rails';
 import {UpdateWarehouseModal} from "./UpdateWarehouseModal";
 
@@ -27,7 +32,14 @@ const AddNewWarehouseModal = (props) => {
         })
             .then((result) => {
                 console.log("success",result);
-                setList(concat(list, result.data));
+                if (result.data.error){
+                    alert(join(result.data.error, '\n')
+                    )
+                }
+                else{
+                    setList(concat(list, result.data));
+                }
+
             })
             .catch((error) => {
                 console.log("error", error);

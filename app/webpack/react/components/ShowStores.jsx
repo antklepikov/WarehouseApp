@@ -3,13 +3,29 @@ import React, {useState, useEffect} from 'react';
 // Libs
 import axios from 'axios';
 import map from 'lodash/map';
+import {createUseStyles} from 'react-jss'
+import clsx from 'clsx';
 // Components
-import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
+
+const useStyles = createUseStyles({
+        scroll: {
+            fontSize: 20,
+            overflowY: 'auto',
+            height: 400,
+            display: 'block',
+        },
+        positionTh: {
+            position: 'sticky',
+            top: -5,
+            background: '#eee',
+    }
+    }
+);
 
 const ShowStores = ({stores}) => {
 
     const [storeData, setStoreData] = useState({title: ''});
-
+    const classes = useStyles()
     const createStore = () => {
         axios.post(`/store`, {
         store: {
@@ -29,12 +45,12 @@ const ShowStores = ({stores}) => {
 
   return (
       <div className="container d-flex">
-          <table className="table col-6 products-block">
+          <table className = {clsx('table', 'col-6', classes.scroll)}>
               <thead>
               <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Show</th>
+                  <th className={classes.positionTh}>#</th>
+                  <th className={classes.positionTh}>Title</th>
+                  <th className={classes.positionTh}>Show</th>
               </tr>
               </thead>
           <tbody>

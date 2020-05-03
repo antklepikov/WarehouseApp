@@ -4,12 +4,25 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import UpdateWarehouseModal from "./UpdateWarehouseModal";
 import map from 'lodash/map';
+import truncate from 'lodash/truncate';
+import {createUseStyles} from 'react-jss'
 
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 
 
-const WarehousePage =({warehouse,  stores, order}) => {
+const useStyles = createUseStyles({
+        root: {
+            fontSize: 20,
+            overflowY: 'auto',
+            height: 400,
+            display: 'block',
+        },
+    }
+);
+
+
+const WarehousePage = ({ warehouse,  stores, order})=> {
     const [productData, setProductData] = useState({title: '', products_count: ''});
     const [dropdownOpenOrder, setDropdownOpenOrder] = useState(false);
     const [dropdownOpenStores, setDropdownOpenStores] = useState(false);
@@ -18,7 +31,7 @@ const WarehousePage =({warehouse,  stores, order}) => {
     const [totalPages, setTotalPages] = useState(0)
     const dropdownOrder = () => setDropdownOpenOrder(prevState => !prevState);
     const dropdownStores = () => setDropdownOpenStores(prevState => !prevState);
-
+    const classes = useStyles()
 
     useEffect(() => {
         axios.get(`/warehouse/${warehouse.id}/product`, {
@@ -96,7 +109,7 @@ const WarehousePage =({warehouse,  stores, order}) => {
                                         <div className="d-flex">
                                             <div className="mr-2 col-6">
                                                 <small>Title:</small>
-                                                <p className="font-italic">{orderItem.orderedProduct.title}</p>
+                                                <div className='font-italic'>{truncate(orderItem.orderedProduct.title, {length : 10})  }</div>
                                             </div>
                                             <div className="mr-2 col-6 border-left">
                                                 <small>Count:</small>
@@ -112,7 +125,7 @@ const WarehousePage =({warehouse,  stores, order}) => {
                                         <div className="d-flex">
                                             <div className="mr-2 col-6 ">
                                                 <small>Title:</small>
-                                                <div className="font-italic">{orderItem.orderedProduct.title}</div>
+                                                <div className="font-italic">{truncate(orderItem.orderedProduct.title, {length : 10})  }</div>
                                             </div>
                                             <div className="mr-2 col-6 border-left ">
                                                 <small>Count:</small>
@@ -170,7 +183,7 @@ const WarehousePage =({warehouse,  stores, order}) => {
                     <input className="btn btn-warning mb-2" type="submit" value="Отправить" onClick={createProduct}/>
                 </div>
             </div>
-            <div className="d-flex products-block">
+            <div className={classes.root}>
                 <table className="table">
                     <thead>
                     <tr>

@@ -4,12 +4,9 @@ class WarehouseController < ApplicationController
     @warehouses = current_user.warehouses.all.page(params[:page])
     respond_to do |format|
       format.html
-# format.json { ActiveModel::UserWarehouseProductsCountSerializer, total_pages: @warehouses.total_pages}
-# format.json  @warehouses, serializer: UserWarehouseProductsCountSerializer, adapter: json
       format.json { render(
           {json:
                {
-                   # @warehouses, each_serializer: UserWarehouseProductsCountSerializer
                    warehouses: ActiveModel::Serializer::CollectionSerializer.new(@warehouses, serializer: WarehouseSerializer),
                    total_pages: @warehouses.total_pages
                }
@@ -46,21 +43,19 @@ class WarehouseController < ApplicationController
         format.json { render json: @warehouse }
       end
     else
-      respond_to do |format|
-        format.html
-        format.json {render :json => { :error => @warehouse.errors.full_messages }}
-      end
+      render :json => { :error => @warehouse.errors.full_messages }
     end
-
   end
 
   def update
     @warehouse = Warehouse.find(params[:id])
-    @warehouse.update(warehouse_params)
-    respond_to do |format|
-      format.html
-      format.json { render json: @warehouse }
-
+    if @warehouse.update(warehouse_params)
+      respond_to do |format|
+        format.html
+        format.json { render json: @warehouse }
+      end
+    else
+      render :json => { :error => @warehouse.errors.full_messages }
     end
   end
 
@@ -75,7 +70,6 @@ class WarehouseController < ApplicationController
 
 
   private
-
   def warehouse_params
     params.require(:warehouse).permit(:title, :number, :address)
   end
