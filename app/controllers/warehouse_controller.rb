@@ -18,6 +18,7 @@ class WarehouseController < ApplicationController
   def show
 
     @warehouse = Warehouse.find(params[:id])
+
     @productsCount = ProductsWarehouse.where(warehouse_id: @warehouse.id).map { |item| {id: item.product_id, products_count: item.products_count} }
     @order = Order.where(warehouse_id: @warehouse.id)
 

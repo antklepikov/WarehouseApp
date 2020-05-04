@@ -6,9 +6,18 @@ import UpdateWarehouseModal from "./UpdateWarehouseModal";
 import map from 'lodash/map';
 import truncate from 'lodash/truncate';
 import {createUseStyles} from 'react-jss'
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import clsx from 'clsx'
 
 
 const useStyles = createUseStyles({
@@ -18,6 +27,7 @@ const useStyles = createUseStyles({
             height: 400,
             display: 'block',
         },
+
     }
 );
 
@@ -165,89 +175,92 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
 
                 <div className="ml-auto text-center">
                     Add new product:
-                    <div className="mb-2">
-                        <input name="title"
-                               type="text"
-                               placeholder="title"
-                               value={productData.title || ''}
-                               onChange={(e) => setProductData({...productData, title: e.target.value})}/>
+                    <div>
+                        <TextField id="outlined-title"
+                                   className="mb-4"
+                                   label="Title"
+                                   variant="outlined"
+                                   value={productData.title || ''}
+                                   onChange={(e) => setProductData({...productData, title: e.target.value})}/>
+
                     </div>
-                    <div className="mb-2">
-                        <input name="products_count"
-                               type="text"
-                               placeholder="count"
-                               value={productData.products_count || ''}
-                               onChange={(e) => setProductData({...productData, products_count: e.target.value})}/>
+                    <div>
+                        <TextField id="outlined-title"
+                                   className="mb-4 "
+                                   label="Count"
+                                   variant="outlined"
+                                   value={productData.title || ''}
+                                   onChange={(e) => setProductData({...productData, title: e.target.value})}/>
+
                     </div>
 
                     <input className="btn btn-warning mb-2" type="submit" value="Отправить" onClick={createProduct}/>
                 </div>
             </div>
-            <div className={classes.root}>
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">№</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Count</th>
-                    </tr>
-                    </thead>
-                <tbody>
 
-                    {map(products, (productItem, key) => {
 
-                            return (
-                                <tr key={`productItem-${productItem.product.id}-${key}`}>
-                                    <td>
-                                        {key + 1})
-                                    </td>
-                                    <td>
-                                        {productItem.product.title}
-                                    </td>
-                                    <td>
-                                        {productItem.productCount}
-                                    </td>
+            <div className="col-6 mt-2">
+                <TableContainer component={Paper}>
+                    <Table className="" aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>№</TableCell>
+                                <TableCell align="center">Title</TableCell>
+                                <TableCell align="center">Count</TableCell>
 
-                                </tr>
-                            )
-                        }
-                    )
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {products.map((row, key) => (
+                                <TableRow key={key}>
+                                    <TableCell component="th" scope="row">
+                                        {key}
+                                    </TableCell>
+                                    <TableCell align="center">{row.product.title}</TableCell>
+                                    <TableCell align="center">{row.productCount}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+
+                    </Table>
+                </TableContainer>
+                <div className="mt-4">
+
+                <ReactPaginate
+                    previousLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">
+                                {'<'}
+                            </div>
+                        </div>
                     }
-                </tbody>
-                </table>
+                    nextLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">
+                                {'>'}
+                            </div>
+                        </div>
+                    }
+                    breakLabel={
+                        <div className="page-item d-flex justify-content-center">
+                            <div className="page-link">...</div>
+                        </div>
+                    }
+                    pageClassName='page-item page-link'
+                    breakClassName={'break-me'}
+                    pageCount={totalPages}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={2}
+                    containerClassName={'pagination justify-content-center'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
+                    onPageChange={onChangePage}
+                    hrefBuilder={() => `/warehouse/${warehouse.id}/product`}
+                />
 
+                </div>
             </div>
-            <ReactPaginate
-                previousLabel={
-                    <div className="page-item d-flex justify-content-center">
-                        <div className="page-link">
-                            {'<'}
-                        </div>
-                    </div>
-                }
-                nextLabel={
-                    <div className="page-item d-flex justify-content-center">
-                        <div className="page-link">
-                            {'>'}
-                        </div>
-                    </div>
-                }
-                breakLabel={
-                    <div className="page-item d-flex justify-content-center">
-                        <div className="page-link">...</div>
-                    </div>
-                }
-                pageClassName='page-item page-link'
-                breakClassName={'break-me'}
-                pageCount={totalPages}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={2}
-                containerClassName={'pagination justify-content-center'}
-                subContainerClassName={'pages pagination'}
-                activeClassName={'active'}
-                onPageChange={onChangePage}
-                hrefBuilder={()=>`/warehouse/${warehouse.id}/product`}
-            />
         </div>
     )
 };
