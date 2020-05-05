@@ -54,6 +54,7 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
             }
         })
             .then((response) => {
+                console.log(response)
                 setProducts(response.data.products);
                 setTotalPages(response.data.total_pages)
             });
@@ -113,17 +114,17 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(order, (orderItem, key) => {
-                            if (orderItem.order.count > 1) {
+                            if (orderItem.count > 1) {
                                 return (
-                                    <DropdownItem key={key} className="p-0" href={`/order/${orderItem.order.id}`}>
+                                    <DropdownItem key={key} className="p-0" href={`/order/${orderItem.id}`}>
                                         <div className="d-flex">
                                             <div className="mr-2 col-6">
                                                 <small>Title:</small>
-                                                <div className='font-italic'>{truncate(orderItem.orderedProduct.title, {length : 10})  }</div>
+                                                <div className='font-italic'>{truncate(orderItem.product.title, {length : 10})  }</div>
                                             </div>
                                             <div className="mr-2 col-6 border-left">
                                                 <small>Count:</small>
-                                                <p className="font-italic">{orderItem.order.count}</p>
+                                                <p className="font-italic">{orderItem.count}</p>
                                             </div>
                                             <p>and more...</p>
                                         </div>
@@ -131,15 +132,15 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                                 )
                             } else {
                                 return (
-                                    <DropdownItem key={key} className='p-0' href={`/order/${orderItem.order.id}`}>
+                                    <DropdownItem key={key} className='p-0' href={`/order/${orderItem.id}`}>
                                         <div className="d-flex">
                                             <div className="mr-2 col-6 ">
                                                 <small>Title:</small>
-                                                <div className="font-italic">{truncate(orderItem.orderedProduct.title, {length : 10})  }</div>
+                                                <div className="font-italic">{truncate(orderItem.product.title, {length : 10})  }</div>
                                             </div>
                                             <div className="mr-2 col-6 border-left ">
                                                 <small>Count:</small>
-                                                <p className="font-italic">{orderItem.order.count}</p>
+                                                <p className="font-italic">{orderItem.count}</p>
                                             </div>
                                         </div>
                                     </DropdownItem>
@@ -156,6 +157,7 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(stores, (storesElement, key) => {
+                            console.log("store", storesElement)
                             return (
                                 <DropdownItem key={key} className="" href={`/store/${storesElement.store.id}`}>
                                     <div className="d-flex">
@@ -185,7 +187,7 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
 
                     </div>
                     <div>
-                        <TextField id="outlined-title"
+                        <TextField id="outlined-count"
                                    className="mb-4 "
                                    label="Count"
                                    variant="outlined"
@@ -199,7 +201,7 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
             </div>
 
 
-            <div className="col-6 mt-2">
+            <div className="col-6">
                 <TableContainer component={Paper}>
                     <Table className="" aria-label="simple table">
                         <TableHead>

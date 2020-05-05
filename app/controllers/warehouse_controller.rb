@@ -16,18 +16,19 @@ class WarehouseController < ApplicationController
   end
 
   def show
-
     @warehouse = Warehouse.find(params[:id])
-
-    @productsCount = ProductsWarehouse.where(warehouse_id: @warehouse.id).map { |item| {id: item.product_id, products_count: item.products_count} }
     @order = Order.where(warehouse_id: @warehouse.id)
 
-    @orderInWarehouse = @order.where(status: 0).map { |order|
-      {order: order, orderedProduct: order.product} }
+    @productsCount = ProductsWarehouse.where(warehouse_id: @warehouse.id).map { |item| {id: item.product_id, products_count: item.products_count} }
 
-    @stores = Order.limit(6).where(warehouse_id: @warehouse.id, store: current_user.stores).map { |order| order.store }.map { |store|
-      {store: store, countHold: @order.where(store_id: store.id).count}
-    }.uniq.sort_by { |sort| -sort[:countHold] }
+
+    @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: 0), each_serializer: OrderSerializer)
+
+    @stores = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, store: current_user.stores), each_serializer: OrderSerializer)
+
+    # @stores = Order.limit(6).where(warehouse_id: @warehouse.id, store: current_user.stores).map { |order| order.store }.map { |store|
+    #   {store: store, countHold: @order.where(store_id: store.id).count}
+    # }.uniq.sort_by { |sort| -sort[:countHold] }
 
     respond_to do |format|
       format.html
