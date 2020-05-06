@@ -1,7 +1,10 @@
 class OrderController < ApplicationController
   def show
     @order = Order.find(params[:id])
-    @productOrder = {orderedProduct:  @order.product, productsCount: ProductsWarehouse.find_by(product_id: @order.product_id) }
+    @productOrder = ActiveModelSerializers::SerializableResource.new(@order, each_serializer: OrderSerializer)
+
+    @productCount = ActiveModelSerializers::SerializableResource.new(ProductsWarehouse.find_by(product_id: @order.product_id), serializer: ProductsWarehousesSerializer)
+
   end
 
   def create
@@ -11,15 +14,15 @@ class OrderController < ApplicationController
         format.html
         format.json { render json: @order }
       end
+    else
+      render :json => { :error => @warehouse.errors.full_messages }
     end
   end
 
   def update
     @order =  Order.find(params[:id])
-
     @order.update(status: params[:status])
     @product = ProductsWarehouse.find_by(product_id: @order.product_id)
-
     @product.update(products_count: @product.products_count - @order.count)
 
   end

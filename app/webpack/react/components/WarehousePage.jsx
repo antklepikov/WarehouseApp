@@ -54,8 +54,7 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
             }
         })
             .then((response) => {
-                console.log(response)
-                setProducts(response.data.products);
+                setProducts(response.data.warehouses);
                 setTotalPages(response.data.total_pages)
             });
     }, [page]);
@@ -157,7 +156,6 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(stores, (storesElement, key) => {
-                            console.log("store", storesElement)
                             return (
                                 <DropdownItem key={key} className="" href={`/store/${storesElement.store.id}`}>
                                     <div className="d-flex">
@@ -200,7 +198,6 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                 </div>
             </div>
 
-
             <div className="col-6">
                 <TableContainer component={Paper}>
                     <Table className="" aria-label="simple table">
@@ -220,7 +217,7 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                                         {key}
                                     </TableCell>
                                     <TableCell align="center">{row.product.title}</TableCell>
-                                    <TableCell align="center">{row.productCount}</TableCell>
+                                    <TableCell align="center">{row.products_count}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

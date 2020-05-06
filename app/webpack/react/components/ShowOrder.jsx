@@ -1,23 +1,22 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios'
 
-const ShowOrder = ({productOrder, order}) => {
-
+const ShowOrder = ({productOrder, productCount}) => {
     const approveOrder = () => {
-        axios.put(`/order/${order.id}`, {status: 1})
+        axios.put(`/order/${productOrder.id}`, {status: 1})
             .then((result)=>{
                 console.log("ok", result)
             })
             .catch((error)=>{
                 console.log(error);
             })
-        axios.get(`/store/${order.store_id}`, {order: {order}})
+        axios.get(`/store/${productOrder.store_id}`, {order: {productOrder}})
             .then((res)=>{
                 console.log(res)
             })
     }
     const declineOrder = () => {
-        axios.put(`/order/${order.id}`, {status: 2})
+        axios.put(`/order/${productOrder.id}`, {status: 2})
             .then((result)=>{
                 console.log("ok", result)
             })
@@ -30,7 +29,7 @@ const ShowOrder = ({productOrder, order}) => {
     return (
         <div className="container d-flex">
             <div>
-                <a href={`/warehouse/${order.warehouse_id}`} type="button" className="btn btn-outline-info">Back to
+                <a href={`/warehouse/${productOrder.warehouse_id}`} type="button" className="btn btn-outline-info">Back to
                     warehouse</a>
             </div>
             <div className="card col-6 text-center m-auto">
@@ -39,16 +38,16 @@ const ShowOrder = ({productOrder, order}) => {
                     <div className="list-group-item d-flex">
                         Title product:
 
-                        <p className="ml-2 font-weight-bold font-italic">{productOrder.orderedProduct.title}</p>
+                        <p className="ml-2 font-weight-bold font-italic">{productOrder.product.title}</p>
 
                     </div>
                     <div className="list-group-item d-flex">
                         Count in order:
-                        <p className="ml-2 font-weight-bold font-italic">{order.count}</p>
+                        <p className="ml-2 font-weight-bold font-italic">{productOrder.count}</p>
                     </div>
                     <div className="list-group-item d-flex">
                         Total quantity in stock:
-                        <p className="ml-2 font-weight-bold font-italic">{productOrder.productsCount.products_count}</p>
+                        <p className="ml-2 font-weight-bold font-italic">{productCount.products_count}</p>
                     </div>
 
                     <input type="submit"
