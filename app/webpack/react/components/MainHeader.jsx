@@ -9,6 +9,9 @@ const useStyles = createUseStyles({
         fontSize: {
             fontSize: 40,
         },
+        boxShadow: {
+            boxShadow: [0,5,5,3, 'lightgrey'],
+        }
     }
 );
 
@@ -16,7 +19,7 @@ const MainHeader = (props) => {
     const classes = useStyles()
 
     return (
-        <div className="container main-header">
+        <div className={clsx("container main-header mb-4", classes.boxShadow)}>
             <div className="d-flex">
                 <h1 className="font-italic">Warehouses & Stores</h1>
             </div>

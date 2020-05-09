@@ -1,12 +1,5 @@
 class ProductsWarehousesSerializer < ActiveModel::Serializer
-  attributes *ProductsWarehouse.column_names,
-             :warehouses, :product
+  attributes :id, :warehouse_id, :product_id, :products_count,
+             :warehouse, :product
 
-  def warehouses
-    object.warehouse
-  end
-
-  def product
-    object.product
-  end
 end

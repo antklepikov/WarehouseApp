@@ -36,7 +36,6 @@ const ShowWarehouses = ({totalPages}) => {
         }
     })
         .then((response) => {
-            console.log("res", response)
             setList(response.data.warehouses);
         });
 }, [page]);

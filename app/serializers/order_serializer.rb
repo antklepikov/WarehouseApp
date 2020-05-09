@@ -1,18 +1,7 @@
 class OrderSerializer < BaseSerializer
 
-  attributes *Order.column_names,
+  attributes :id, :count, :store_id, :warehouse_id, :product_id, :status,
              :product,  :store
-
-  def product
-    object.product
-  end
-
-  def store
-    object.store
-  end
-  #
-  # belongs_to :store, serializer: StoreSerializer
-
 
 end
 

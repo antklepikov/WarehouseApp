@@ -1,7 +1,9 @@
 class WarehouseController < ApplicationController
 
+  before_action :set_warehouse, only: [:show, :destroy, :update]
+
   def index
-    @warehouses = current_user.warehouses.all.page(params[:page])
+    @warehouses = current_user.warehouses.page(params[:page])
     respond_to do |format|
       format.html
       format.json { render(
@@ -16,11 +18,16 @@ class WarehouseController < ApplicationController
   end
 
   def show
-    @warehouse = Warehouse.find(params[:id])
-    @order = Order.where(warehouse_id: @warehouse.id, store: current_user.stores).uniq
-    @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: 0), each_serializer: OrderSerializer)
 
-    @stores = ActiveModelSerializers::SerializableResource.new(@order, each_serializer: OrderSerializer)
+    # order = Order.where(warehouse_id: @warehouse.id).group_by {|orders| {order: orders}}
+    orders = Order.where(warehouse_id: @warehouse.id).map{|order| {store: order.store, count: order.count}}
+    puts "lala", orders.inspect
+    @stores = orders
+    # @stores = ActiveModelSerializers::SerializableResource.new(orders, each_serializer: OrderSerializer)
+
+
+    @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: "active"), each_serializer: OrderSerializer)
+
 
     # @stores = Order.limit(6).where(warehouse_id: @warehouse.id, store: current_user.stores).map { |order| order.store }.map { |store|
     #   {store: store, countHold: @order.where(store_id: store.id).count}
@@ -31,10 +38,11 @@ class WarehouseController < ApplicationController
   def create
     @warehouse = Warehouse.new(warehouse_params)
     @warehouse.user_id = current_user.id
+    puts "warehouse", @warehouse.inspect
     if @warehouse.save
       respond_to do |format|
         format.html
-        format.json { render json: @warehouse }
+        format.json { render json: {warehouse: ActiveModelSerializers::SerializableResource.new(@warehouse, each_serializer: WarehouseSerializer)} }
       end
     else
       render :json => { :error => @warehouse.errors.full_messages }
@@ -42,11 +50,11 @@ class WarehouseController < ApplicationController
   end
 
   def update
-    @warehouse = Warehouse.find(params[:id])
+
     if @warehouse.update(warehouse_params)
       respond_to do |format|
         format.html
-        format.json { render json: @warehouse }
+        format.json { render json: {warehouse: ActiveModelSerializers::SerializableResource.new(@warehouse, each_serializer: WarehouseSerializer)} }
       end
     else
       render :json => { :error => @warehouse.errors.full_messages }
@@ -54,7 +62,7 @@ class WarehouseController < ApplicationController
   end
 
   def destroy
-    @warehouse = Warehouse.find(params[:id]).destroy
+    @warehouse.destroy
     respond_to do |format|
       format.html
       format.json { render json: @warehouse }
@@ -64,6 +72,9 @@ class WarehouseController < ApplicationController
 
 
   private
+  def set_warehouse
+    @warehouse = Warehouse.find(params[:id])
+  end
   def warehouse_params
     params.require(:warehouse).permit(:title, :number, :address)
   end

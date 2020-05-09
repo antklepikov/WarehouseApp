@@ -32,8 +32,8 @@ const useStyles = createUseStyles({
 );
 
 
-const WarehousePage = ({ warehouse,  stores, order})=> {
-    const [productData, setProductData] = useState({title: '', products_count: ''});
+const WarehousePage = ({ warehouse,  stores, order}) => {
+    const [productData, setProductData] = useState({title: '', productsCount: ''});
     const [dropdownOpenOrder, setDropdownOpenOrder] = useState(false);
     const [dropdownOpenStores, setDropdownOpenStores] = useState(false);
     const [page, setPage] = useState(0);
@@ -156,6 +156,8 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(stores, (storesElement, key) => {
+
+                            console.log(stores)
                             return (
                                 <DropdownItem key={key} className="" href={`/store/${storesElement.store.id}`}>
                                     <div className="d-flex">
@@ -189,8 +191,8 @@ const WarehousePage = ({ warehouse,  stores, order})=> {
                                    className="mb-4 "
                                    label="Count"
                                    variant="outlined"
-                                   value={productData.title || ''}
-                                   onChange={(e) => setProductData({...productData, title: e.target.value})}/>
+                                   value={productData.productsCount || ''}
+                                   onChange={(e) => setProductData({...productData, productsCount: e.target.value})}/>
 
                     </div>
 

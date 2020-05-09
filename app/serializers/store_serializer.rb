@@ -1,8 +1,5 @@
 class StoreSerializer < BaseSerializer
 
-  attributes *Store.column_names
-  #
-  # has_many :orders, serializer: OrderSerializer
-  #
+  attributes :id, :title, :user_id
 
 end

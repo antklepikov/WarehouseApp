@@ -10,9 +10,18 @@ import join from 'lodash/join';
 import ReactOnRails from 'react-on-rails';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {createUseStyles} from 'react-jss'
+import clsx from 'clsx'
 
+const useStyles = createUseStyles({
+        goldButton: {
+           backgroundColor: "#FFD700 !important"
+        },
+
+    }
+);
 const AddNewWarehouseModal = (props) => {
-
+    const classes = useStyles()
     const {buttonLabel, setList, list} = props;
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -31,13 +40,13 @@ const AddNewWarehouseModal = (props) => {
             headers: ReactOnRails.authenticityHeaders()
         })
             .then((result) => {
-                console.log("success",result);
+                console.log("success",result.data.warehouse);
                 if (result.data.error){
                     alert(join(result.data.error, '\n')
                     )
                 }
                 else{
-                    setList(concat(list, result.data));
+                    setList(concat(list, result.data.warehouse));
                 }
             })
             .catch((error) => {
@@ -47,7 +56,7 @@ const AddNewWarehouseModal = (props) => {
     return (
         <div>
 
-            <Button className="btn btn-warning mb-4" variant="outlined" color="primary" onClick={toggle}>{buttonLabel}</Button>
+            <Button className={clsx("btn mb-4", classes.goldButton)} variant="outlined"  onClick={toggle}>{buttonLabel}</Button>
             <Modal isOpen={modal} toggle={toggle} >
                 <ModalHeader toggle={toggle}>Create warehouse</ModalHeader>
                 <ModalBody>

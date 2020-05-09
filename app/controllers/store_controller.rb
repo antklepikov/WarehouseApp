@@ -15,7 +15,11 @@ class StoreController < ApplicationController
     if @store.save(:validate => false)
       respond_to do |format|
         format.html
-        format.json { render json: @store }
+        format.json { render (
+                                 {json:
+                                      {store: ActiveModel::Serializer::CollectionSerializer.new(@store, serializer: StoreSerializer)}
+                                 }
+                             ) }
       end
     end
   end
