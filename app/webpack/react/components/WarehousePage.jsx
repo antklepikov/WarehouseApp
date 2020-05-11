@@ -27,6 +27,9 @@ const useStyles = createUseStyles({
             height: 400,
             display: 'block',
         },
+        goldButton: {
+            backgroundColor: "#FFD700 !important"
+        },
 
     }
 );
@@ -157,7 +160,6 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
                     <DropdownMenu>
                         {map(stores, (storesElement, key) => {
 
-                            console.log(stores)
                             return (
                                 <DropdownItem key={key} className="" href={`/store/${storesElement.store.id}`}>
                                     <div className="d-flex">
@@ -175,7 +177,7 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
                 </Dropdown>
 
 
-                <div className="ml-auto text-center">
+                <div className="ml-auto text-center font-italic">
                     Add new product:
                     <div>
                         <TextField id="outlined-title"
@@ -195,8 +197,9 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
                                    onChange={(e) => setProductData({...productData, productsCount: e.target.value})}/>
 
                     </div>
-
-                    <input className="btn btn-warning mb-2" type="submit" value="Отправить" onClick={createProduct}/>
+                    <Button variant="contained" className={classes.goldButton} onClick={createProduct}>
+                        Send
+                    </Button>
                 </div>
             </div>
 

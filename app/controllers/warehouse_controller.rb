@@ -19,26 +19,17 @@ class WarehouseController < ApplicationController
 
   def show
 
-    # order = Order.where(warehouse_id: @warehouse.id).group_by {|orders| {order: orders}}
-    orders = Order.where(warehouse_id: @warehouse.id).map{|order| {store: order.store, count: order.count}}
-    puts "lala", orders.inspect
-    @stores = orders
+    # orders = Order.where(warehouse_id: @warehouse.id).group_by {|order| {store: order.store}}.uniq
+    # puts "lala", orders.inspect
+    # @stores = orders
     # @stores = ActiveModelSerializers::SerializableResource.new(orders, each_serializer: OrderSerializer)
 
-
     @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: "active"), each_serializer: OrderSerializer)
-
-
-    # @stores = Order.limit(6).where(warehouse_id: @warehouse.id, store: current_user.stores).map { |order| order.store }.map { |store|
-    #   {store: store, countHold: @order.where(store_id: store.id).count}
-    # }.uniq.sort_by { |sort| -sort[:countHold] }
-
   end
 
   def create
     @warehouse = Warehouse.new(warehouse_params)
     @warehouse.user_id = current_user.id
-    puts "warehouse", @warehouse.inspect
     if @warehouse.save
       respond_to do |format|
         format.html

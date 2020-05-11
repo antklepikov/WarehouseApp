@@ -6,7 +6,6 @@ import map from 'lodash/map';
 import NewOrderModal from '../components/NewOrderModal'
 
 const StorePage = ({store, warehouses, productsCount, productsInStores}) => {
-    console.log("productsInStores", productsInStores)
     return (
         <div className="container">
             <div className="font-weight-bold">

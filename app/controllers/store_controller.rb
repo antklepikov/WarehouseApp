@@ -4,23 +4,22 @@ class StoreController < ApplicationController
   end
 
   def show
+    @warehouses = current_user.warehouses
     @store = Store.find(params[:id])
-    @productsInStores = ActiveModelSerializers::SerializableResource.new(@store.orders.where(status: 1), each_serializer: OrderSerializer)
+    @productsInStores = ActiveModelSerializers::SerializableResource.new(@store.orders.where(status: "approved"), each_serializer: OrderSerializer)
 
   end
 
   def create
     @store = Store.new(stores_params)
     @store.user_id = current_user.id
-    if @store.save(:validate => false)
+    if @store.save
       respond_to do |format|
         format.html
-        format.json { render (
-                                 {json:
-                                      {store: ActiveModel::Serializer::CollectionSerializer.new(@store, serializer: StoreSerializer)}
-                                 }
-                             ) }
+        format.json { render json: {store: ActiveModelSerializers::SerializableResource.new(@store, each_serializer: StoreSerializer)} }
       end
+    else
+      render :json => { :error => @store.errors.full_messages }
     end
   end
 

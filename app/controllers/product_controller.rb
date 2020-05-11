@@ -8,7 +8,7 @@ class ProductController < ApplicationController
       format.json { render(
           {json:
                {
-                   warehouses: ActiveModel::Serializer::CollectionSerializer.new(@productsWarehouse, serializer: ProductsWarehousesSerializer),
+                   products: ActiveModel::Serializer::CollectionSerializer.new(@productsWarehouse, serializer: ProductsWarehousesSerializer),
                    total_pages: @productsWarehouse.total_pages
                }
           }
@@ -20,7 +20,7 @@ class ProductController < ApplicationController
     @warehouse = Warehouse.find(params[:warehouse_id])
     @product = Product.new(products_params)
     @warehouseProduct = ProductsWarehouse.new(warehouse_id: @warehouse.id, product_id: @product.id, products_count: params[:productCount]).save
-    if @product.save || @warehouseProduct.save
+    if @product.save && @warehouseProduct.save
       respond_to do |format|
         format.html
         format.json { render json: @product }

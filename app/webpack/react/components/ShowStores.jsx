@@ -5,6 +5,16 @@ import axios from 'axios';
 import map from 'lodash/map';
 import {createUseStyles} from 'react-jss'
 import clsx from 'clsx';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 // Components
 
 const useStyles = createUseStyles({
@@ -14,11 +24,7 @@ const useStyles = createUseStyles({
             height: 400,
             display: 'block',
         },
-        positionTh: {
-            position: 'sticky',
-            top: -5,
-            background: '#eee',
-    }
+
     }
 );
 
@@ -26,6 +32,7 @@ const ShowStores = ({stores}) => {
 
     const [storeData, setStoreData] = useState({title: ''});
     const classes = useStyles()
+
     const createStore = () => {
         axios.post(`/store`, {
         store: {
@@ -44,40 +51,46 @@ const ShowStores = ({stores}) => {
     };
 
   return (
-      <div className="container d-flex">
-          <table className = {clsx('table', 'col-6', classes.scroll)}>
-              <thead>
-              <tr>
-                  <th className={classes.positionTh}>#</th>
-                  <th className={classes.positionTh}>Title</th>
-                  <th className={classes.positionTh}>Show</th>
-              </tr>
-              </thead>
-          <tbody>
-              {map(stores, (storeItem, key) => {
+      <div className={clsx("container d-flex", classes.scroll)}>
+          <TableContainer className="mr-auto col-6 " component={Paper}>
+              <Table stickyHeader aria-label="sticky table" className={classes.scroll}>
+                  <TableHead>
+                      <TableRow>
+                          <TableCell>№</TableCell>
+                          <TableCell align="center">Title</TableCell>
+                          <TableCell align="center">Show</TableCell>
+                      </TableRow>
+                  </TableHead>
+                  <TableBody>
+                      {stores.map((row, key) => (
+                          <TableRow key={key}>
+                              <TableCell component="th" scope="row">
+                                  {key}
+                              </TableCell>
+                              <TableCell align="center">{row.title}</TableCell>
+                              <TableCell align="center">
+                                  <Button variant="outlined" color="primary" href={`/store/${row.id}`}>
+                                      Show {row.title}
+                                  </Button>
+                              </TableCell>
+                          </TableRow>
+                      ))}
+                  </TableBody>
 
-                      return (
-                          <tr key={`storeItem-${storeItem.id}-${key}`}>
-                              <td>{key}</td>
-                              <td>{storeItem.title}</td>
-                              <td><a className="btn font-weight-bold btn-light" type="button" href={`/store/${storeItem.id}`}>Show {storeItem.title}</a></td>
-                          </tr>
-                      );
-                  }
-              )
-              }
-          </tbody>
-          </table>
+              </Table>
+          </TableContainer>
+
           <div className='ml-auto text-center'>
-              <p>Add new store</p>
+              <p className="font-italic">Add new store</p>
               <div className="mb-2">
-                  <input name="title"
-                         type="text"
-                         placeholder="title"
-                         value={storeData.title || ''}
-                         onChange={(e) => setStoreData({...storeData, title: e.target.value})}/>
+                  <TextField id="standard-basic"
+                             label="title"
+                             value={storeData.title || ''}
+                             onChange={(e) => setStoreData({...storeData, title: e.target.value})}/>
               </div>
-              <input className="btn btn-warning mb-2" type="submit" value="Добавить" onClick={createStore}/>
+              <Button variant="contained" color="primary" onClick={createStore}>
+                  Primary
+              </Button>
           </div>
       </div>
   );
