@@ -1,7 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios'
+import PropTypes from 'prop-types';
+
 
 const ShowOrder = ({productOrder, productCount}) => {
+
     const approveOrder = () => {
         axios.put(`/order/${productOrder.id}`, {status: 1})
             .then((result)=>{
@@ -66,6 +69,10 @@ const ShowOrder = ({productOrder, productCount}) => {
 
 
 };
+ShowOrder.propTypes = {
+    productCount: PropTypes.object,
+    productOrder: PropTypes.object,
+}
 export default (props) => <ShowOrder {...props} />;
 
 

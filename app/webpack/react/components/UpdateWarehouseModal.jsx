@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import axios from 'axios'
+import PropTypes from 'prop-types';
+import NewOrderModal from "./NewOrderModal";
 
-const UpdateWarehouseModal = ({className, warehouse, list}) => {
-
+const UpdateWarehouseModal = ({warehouse}) => {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
@@ -25,7 +26,7 @@ const UpdateWarehouseModal = ({className, warehouse, list}) => {
             <Button className="btn btn-outline-success btn-sm" onClick={toggle}>
                 <i className="fa fa-pencil-square-o" aria-hidden="true"/>
             </Button>
-            <Modal isOpen={modal} toggle={toggle} className={className}>
+            <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Update warehouse</ModalHeader>
                 <ModalBody>
                     <table className="table">
@@ -63,9 +64,12 @@ const UpdateWarehouseModal = ({className, warehouse, list}) => {
             </Modal>
         </div>
     );
-
-
 };
+
+UpdateWarehouseModal.propTypes = {
+    warehouse: PropTypes.object,
+}
+
 export default UpdateWarehouseModal
 
 

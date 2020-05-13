@@ -5,7 +5,7 @@ import axios from 'axios';
 import map from 'lodash/map';
 import {createUseStyles} from 'react-jss'
 import clsx from 'clsx';
-
+import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -89,10 +89,14 @@ const ShowStores = ({stores}) => {
                              onChange={(e) => setStoreData({...storeData, title: e.target.value})}/>
               </div>
               <Button variant="contained" color="primary" onClick={createStore}>
-                  Primary
+                  Send
               </Button>
           </div>
       </div>
   );
 };
+
+ShowStores.propTypes = {
+    stores: PropTypes.array,
+}
 export default (props) => <ShowStores {...props} />;

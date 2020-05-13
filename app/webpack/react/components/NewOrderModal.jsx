@@ -17,7 +17,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
+import PropTypes from 'prop-types';
 
 const useStyles = createUseStyles({
         goldButton: {
@@ -27,7 +27,7 @@ const useStyles = createUseStyles({
     }
 );
 
-const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
+const NewOrderModal = ({ buttonLabel, warehouses, store}) => {
     const classes = useStyles()
     const [modal, setModal] = useState(false);
     const [productsList, setProductsList] = useState([]);
@@ -97,7 +97,7 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
     return (
         <div>
             <Button className={classes.goldButton} variant="outlined" onClick={toggle}>{buttonLabel}</Button>
-            <Modal isOpen={modal} toggle={toggle} className={className}>
+            <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle} className = "font-italic">New order</ModalHeader>
                 <ModalBody>
                     {/*<Select className='mt-2' options={warehouseList} onChange = {getProducts}/>*/}
@@ -134,7 +134,7 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
                         >
                             {productsList.map((product, key) => {
                                 return (
-                                    <MenuItem key={key} value={product}>
+                                    <MenuItem  key={key} value={product}>
                                         {product.product.title}
                                     </MenuItem>
                                 )
@@ -162,9 +162,12 @@ const NewOrderModal = ({className, buttonLabel, warehouses, store}) => {
             </Modal>
         </div>
     );
-
-
 };
+NewOrderModal.propTypes = {
+    buttonLabel: PropTypes.string,
+    store: PropTypes.object,
+    warehouses: PropTypes.array
+}
 export default NewOrderModal;
 
 

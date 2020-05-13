@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-// import Button from 'reactstrap/es/Button'
 import Modal from 'reactstrap/es/Modal'
 import ModalHeader from 'reactstrap/es/ModalHeader'
 import ModalBody from 'reactstrap/es/ModalBody'
@@ -12,6 +11,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {createUseStyles} from 'react-jss'
 import clsx from 'clsx'
+import PropTypes from 'prop-types';
+
+
 
 const useStyles = createUseStyles({
         goldButton: {
@@ -106,7 +108,13 @@ const AddNewWarehouseModal = (props) => {
 
 
 };
-export {AddNewWarehouseModal}
+
+AddNewWarehouseModal.propTypes = {
+    buttonLabel: PropTypes.string,
+    setList: PropTypes.func,
+    list: PropTypes.array
+}
+export default AddNewWarehouseModal
 
 
 

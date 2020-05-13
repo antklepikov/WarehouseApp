@@ -18,6 +18,7 @@ import ReactPaginate from 'react-paginate';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import clsx from 'clsx'
+import PropTypes from 'prop-types';
 
 
 const useStyles = createUseStyles({
@@ -36,6 +37,9 @@ const useStyles = createUseStyles({
 
 
 const WarehousePage = ({ warehouse,  stores, order}) => {
+    console.log("warehouse", warehouse)
+    console.log("warehouse", stores)
+    console.log("order", order)
     const [productData, setProductData] = useState({title: '', productsCount: ''});
     const [dropdownOpenOrder, setDropdownOpenOrder] = useState(false);
     const [dropdownOpenStores, setDropdownOpenStores] = useState(false);
@@ -47,6 +51,10 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
     const classes = useStyles()
 
     useEffect(() => {
+        getProduct()
+    }, [page]);
+
+    const getProduct = () => {
         axios.get(`/warehouse/${warehouse.id}/product`, {
             headers: {
                 'Accept': 'application/json',
@@ -57,11 +65,10 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
             }
         })
             .then((response) => {
-                setProducts(response.data.warehouses);
+                setProducts(response.data.products);
                 setTotalPages(response.data.total_pages)
             });
-    }, [page]);
-
+    }
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
             product: {
@@ -268,6 +275,12 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
         </div>
     )
 };
+
+WarehousePage.propTypes = {
+    stores: PropTypes.array,
+    orders: PropTypes.array,
+    warehouse: PropTypes.object
+}
 
 const WarehousePageChange = React.memo(WarehousePage);
 

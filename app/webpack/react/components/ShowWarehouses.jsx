@@ -6,7 +6,7 @@ import map from 'lodash/map';
 import without from 'lodash/without';
 
 // Components
-import {AddNewWarehouseModal} from "./AddNewWarehoseModal";
+import AddNewWarehouseModal from "./AddNewWarehoseModal";
 import ReactPaginate from 'react-paginate';
 import Routes from '../../routes.js'
 import Table from '@material-ui/core/Table';
@@ -19,6 +19,8 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button'
+import PropTypes from 'prop-types';
+
 
 const ShowWarehouses = ({totalPages}) => {
 
@@ -26,19 +28,25 @@ const ShowWarehouses = ({totalPages}) => {
     const [page, setPage] = useState(0);
 
     useEffect(() => {
-        axios.get(Routes.warehouse_path(), {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        },
-        params: {
-            page: page
-        }
-    })
-        .then((response) => {
-            setList(response.data.warehouses);
-        });
+        getWarehouses()
 }, [page]);
+
+
+    const getWarehouses = () => {
+        axios.get(Routes.warehouse_path(), {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            params: {
+                page: page
+            }
+        })
+            .then((response) => {
+                setList(response.data.warehouses);
+            });
+    }
+
 
     const deleteWarehouse = (id) => {
         axios.delete(`/warehouse/${id}`)
@@ -139,5 +147,7 @@ const ShowWarehouses = ({totalPages}) => {
     );
 
 };
-
+ShowWarehouses.propTypes = {
+    totalPages: PropTypes.number,
+}
 export default (props) => <ShowWarehouses {...props} />;
