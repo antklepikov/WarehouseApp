@@ -5,14 +5,15 @@ import ModalBody from 'reactstrap/es/ModalBody'
 import ModalFooter from 'reactstrap/es/ModalFooter'
 import axios from 'axios'
 import concat from 'lodash/concat';
-import join from 'lodash/join';
+import map from 'lodash/map';
 import ReactOnRails from 'react-on-rails';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {createUseStyles} from 'react-jss'
 import clsx from 'clsx'
 import PropTypes from 'prop-types';
-
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 
 const useStyles = createUseStyles({
@@ -26,8 +27,10 @@ const AddNewWarehouseModal = (props) => {
     const classes = useStyles()
     const {buttonLabel, setList, list} = props;
     const [modal, setModal] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [textError, setTextError] = useState('')
     const toggle = () => setModal(!modal);
-
+    console.log(textError)
     const [headData, setHeadData] = useState({title: '', number: '', address: ''});
 
 
@@ -42,12 +45,10 @@ const AddNewWarehouseModal = (props) => {
             headers: ReactOnRails.authenticityHeaders()
         })
             .then((result) => {
-                console.log("success",result.data.warehouse);
-                if (result.data.error){
-                    alert(join(result.data.error, '\n')
-                    )
-                }
-                else{
+                if (result.data.error) {
+                    setOpen(true);
+                    setTextError(result.data.error);
+                } else {
                     setList(concat(list, result.data.warehouse));
                 }
             })
@@ -55,6 +56,12 @@ const AddNewWarehouseModal = (props) => {
                 console.log("error", error);
             })
     };
+
+    const handleClose = () => {
+        setOpen(false);
+        setTextError('')
+    };
+
     return (
         <div>
 
@@ -63,6 +70,16 @@ const AddNewWarehouseModal = (props) => {
                 <ModalHeader toggle={toggle}>Create warehouse</ModalHeader>
                 <ModalBody>
                     <div className="text-center">
+                        <Snackbar open={open}  onClose={handleClose} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                            <Alert onClose={handleClose} severity="error" variant='filled'>
+                                {map(textError, (error, key)=>{
+                                    return(
+                                        <div key={key}>{error}<br></br></div>
+                                    )
+
+                                })}
+                            </Alert>
+                        </Snackbar>
                         <div>
                             <TextField id="outlined-title"
                                        className="mb-4 col-6"

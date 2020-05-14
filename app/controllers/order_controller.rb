@@ -4,7 +4,6 @@ class OrderController < ApplicationController
     @productOrder = ActiveModelSerializers::SerializableResource.new(@order, each_serializer: OrderSerializer)
 
     @productCount = ActiveModelSerializers::SerializableResource.new(ProductsWarehouse.find_by(product_id: @order.product_id), serializer: ProductsWarehousesSerializer)
-
   end
 
   def create
@@ -24,8 +23,8 @@ class OrderController < ApplicationController
     @order.update(status: params[:status])
     @product = ProductsWarehouse.find_by(product_id: @order.product_id)
     @product.update(products_count: @product.products_count - @order.count)
-
   end
+
   private
   def order_params
     params.require(:orders).permit(:count, :warehouse_id, :product_id, :store_id)

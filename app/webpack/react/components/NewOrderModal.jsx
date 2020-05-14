@@ -18,6 +18,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+
 
 const useStyles = createUseStyles({
         goldButton: {
@@ -35,6 +38,8 @@ const NewOrderModal = ({ buttonLabel, warehouses, store}) => {
     const [currentProduct, setCurrentProduct] = useState({});
     const [productCountOrder, setProductCountOrder] = useState({});
     const [visible, setVisible] = useState({errorColor: false, errorText: '', disabledButton: false})
+    const [open, setOpen] = useState(false);
+    const [textError, setTextError] = useState('')
 
     const toggle = () => {
         setModal(!modal)
@@ -73,7 +78,10 @@ const NewOrderModal = ({ buttonLabel, warehouses, store}) => {
             }
         })
             .then((result) => {
-                console.log('SUCCESS', result);
+                if (result.data.error) {
+                    setOpen(true);
+                    setTextError(result.data.error);
+                }
             })
             .catch((error) => {
                 console.log('ERROR', error)
@@ -94,13 +102,28 @@ const NewOrderModal = ({ buttonLabel, warehouses, store}) => {
         }
     };
 
+    const handleClose = () => {
+        setOpen(false);
+        setTextError('')
+    };
+
     return (
         <div>
             <Button className={classes.goldButton} variant="outlined" onClick={toggle}>{buttonLabel}</Button>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle} className = "font-italic">New order</ModalHeader>
                 <ModalBody>
-                    {/*<Select className='mt-2' options={warehouseList} onChange = {getProducts}/>*/}
+
+                    <Snackbar open={open}  onClose={handleClose} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                        <Alert onClose={handleClose} severity="error" variant='filled'>
+                            {map(textError, (error, key)=>{
+                                return(
+                                    <div key={key}>{error}<br></br></div>
+                                )
+
+                            })}
+                        </Alert>
+                    </Snackbar>
 
                     <FormControl className='w-100'>
                         <InputLabel id="demo-mutiple-name-label">Name</InputLabel>

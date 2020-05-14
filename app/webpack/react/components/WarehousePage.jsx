@@ -19,7 +19,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import clsx from 'clsx'
 import PropTypes from 'prop-types';
-
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const useStyles = createUseStyles({
         root: {
@@ -37,15 +38,14 @@ const useStyles = createUseStyles({
 
 
 const WarehousePage = ({ warehouse,  stores, order}) => {
-    console.log("warehouse", warehouse)
-    console.log("warehouse", stores)
-    console.log("order", order)
     const [productData, setProductData] = useState({title: '', productsCount: ''});
     const [dropdownOpenOrder, setDropdownOpenOrder] = useState(false);
     const [dropdownOpenStores, setDropdownOpenStores] = useState(false);
     const [page, setPage] = useState(0);
     const [products, setProducts] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
+    const [open, setOpen] = useState(false);
+    const [textError, setTextError] = useState('')
     const dropdownOrder = () => setDropdownOpenOrder(prevState => !prevState);
     const dropdownStores = () => setDropdownOpenStores(prevState => !prevState);
     const classes = useStyles()
@@ -78,8 +78,14 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
             headers: ReactOnRails.authenticityHeaders()
         })
             .then((result) => {
-                console.log(result);
-                setProductData(result.data);
+                if (result.data.error) {
+                    console.log(result.data.error)
+                    setOpen(true);
+                    setTextError(result.data.error);
+                } else {
+                    setProductData(result.data);
+                }
+
             })
             .catch((result) => {
                 console.log(result)
@@ -91,6 +97,11 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
         if (pageToGo !== page) {
             setPage(pageToGo);
         }
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setTextError('')
     };
     return (
         <div className='container'>
@@ -186,6 +197,7 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
 
                 <div className="ml-auto text-center font-italic">
                     Add new product:
+
                     <div>
                         <TextField id="outlined-title"
                                    className="mb-4"
@@ -207,6 +219,19 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
                     <Button variant="contained" className={classes.goldButton} onClick={createProduct}>
                         Send
                     </Button>
+                    <div>
+                        <Snackbar open={open}  onClose={handleClose} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+                            <Alert onClose={handleClose} severity="error" variant="filled">
+                                {map(textError, (error, key)=>{
+                                    return(
+                                        <div key={key}>{error}<br></br></div>
+                                    )
+
+                                })}
+                            </Alert>
+                        </Snackbar>
+                    </div>
+
                 </div>
             </div>
 

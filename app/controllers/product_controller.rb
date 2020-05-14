@@ -26,7 +26,7 @@ class ProductController < ApplicationController
         format.json { render json: @product }
       end
     else
-      render :json => { :error => @warehouse.errors.full_messages }
+      render :json => { :error =>  @product.errors.full_messages }
     end
 
   end

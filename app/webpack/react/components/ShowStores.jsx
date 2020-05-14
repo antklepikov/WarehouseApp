@@ -15,6 +15,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 // Components
 
 const useStyles = createUseStyles({
@@ -29,7 +31,8 @@ const useStyles = createUseStyles({
 );
 
 const ShowStores = ({stores}) => {
-
+    const [open, setOpen] = useState(false);
+    const [textError, setTextError] = useState('')
     const [storeData, setStoreData] = useState({title: ''});
     const classes = useStyles()
 
@@ -42,14 +45,23 @@ const ShowStores = ({stores}) => {
         headers: ReactOnRails.authenticityHeaders()
     })
         .then((result) => {
-            console.log(result);
-            setStoreData(result.data);
+            if (result.data.error) {
+                setOpen(true);
+                setTextError(result.data.error);
+            } else {
+                setStoreData(result.data);
+            }
+
         })
         .catch((result) => {
             console.log(result)
         })
     };
 
+    const handleClose = () => {
+        setOpen(false);
+        setTextError('')
+    };
   return (
       <div className={clsx("container d-flex", classes.scroll)}>
           <TableContainer className="mr-auto col-6 " component={Paper}>
@@ -82,6 +94,16 @@ const ShowStores = ({stores}) => {
 
           <div className='ml-auto text-center'>
               <p className="font-italic">Add new store</p>
+              <Snackbar open={open}  onClose={handleClose} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+                  <Alert onClose={handleClose} severity="error" variant='filled'>
+                      {map(textError, (error, key)=>{
+                          return(
+                              <div key={key}>{error}<br></br></div>
+                          )
+
+                      })}
+                  </Alert>
+              </Snackbar>
               <div className="mb-2">
                   <TextField id="standard-basic"
                              label="title"
