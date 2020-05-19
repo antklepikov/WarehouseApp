@@ -19,10 +19,7 @@ class WarehouseController < ApplicationController
 
   def show
 
-    # orders = Order.where(warehouse_id: @warehouse.id).group_by {|order| {store: order.store}}.uniq
-    # puts "lala", orders.inspect
-    # @stores = orders
-    # @stores = ActiveModelSerializers::SerializableResource.new(orders, each_serializer: OrderSerializer)
+    orders = Order.where(warehouse_id: @warehouse.id).group_by{|order| order.store}
 
     @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: "active"), each_serializer: OrderSerializer)
   end

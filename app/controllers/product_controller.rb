@@ -17,9 +17,9 @@ class ProductController < ApplicationController
   end
 
   def create
-    @warehouse = Warehouse.find(params[:warehouse_id])
+    warehouse = Warehouse.find(params[:warehouse_id])
     @product = Product.new(products_params)
-    @warehouseProduct = ProductsWarehouse.new(warehouse_id: @warehouse.id, product_id: @product.id, products_count: params[:productCount]).save
+    @warehouseProduct = ProductsWarehouse.new(warehouse_id: warehouse.id, product_id: @product.id, products_count: params[:productCount]).save
     if @product.save && @warehouseProduct.save
       respond_to do |format|
         format.html
