@@ -1,6 +1,7 @@
 class WarehouseController < ApplicationController
 
   before_action :set_warehouse, only: [:show, :destroy, :update]
+  before_action :popular_stores, only: [:show]
 
   def index
     @warehouses = current_user.warehouses.page(params[:page])
@@ -18,8 +19,7 @@ class WarehouseController < ApplicationController
   end
 
   def show
-
-    orders = Order.where(warehouse_id: @warehouse.id).group_by{|order| order.store}
+    @stores = ActiveModelSerializers::SerializableResource.new(@orders_stores, each_serializer: StoreSerializer)
 
     @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: "active"), each_serializer: OrderSerializer)
   end
@@ -63,6 +63,12 @@ class WarehouseController < ApplicationController
   def set_warehouse
     @warehouse = Warehouse.find(params[:id])
   end
+
+  def popular_stores
+
+    @orders_stores = Store.joins(:orders).where( orders: { warehouse_id: @warehouse.id } ).group('stores.id').order('count(orders.id) DESC')
+  end
+
   def warehouse_params
     params.require(:warehouse).permit(:title, :number, :address)
   end

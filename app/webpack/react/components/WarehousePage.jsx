@@ -177,12 +177,11 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
                     </DropdownToggle>
                     <DropdownMenu>
                         {map(stores, (storesElement, key) => {
-                            console.log(stores)
                             return (
-                                <DropdownItem key={key} className="" href={`/store/${storesElement.store.id}`}>
+                                <DropdownItem key={key} className="" href={`/store/${storesElement.id}`}>
                                     <div className="d-flex">
                                         <div className="m-auto font-italic md-2">
-                                            {storesElement.store.title}
+                                            {storesElement.title}
                                         </div>
                                     </div>
                                 </DropdownItem>
@@ -302,7 +301,7 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
 };
 
 WarehousePage.propTypes = {
-    stores: PropTypes.object,
+    stores: PropTypes.array,
     orders: PropTypes.array,
     warehouse: PropTypes.object
 }

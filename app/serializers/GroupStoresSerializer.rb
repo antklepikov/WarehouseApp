@@ -1,5 +1,0 @@
-class GroupStoresSerializer < BaseSerializer
-
-  
-
-end
