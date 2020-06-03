@@ -1,32 +1,52 @@
 import React from 'react';
 import Routes from '../../routes.js'
+import {createUseStyles} from 'react-jss'
+import clsx from 'clsx';
+import Button from '@material-ui/core/Button'
+
+
+const useStyles = createUseStyles({
+        fontSize: {
+            fontSize: 40,
+        },
+        boxShadow: {
+            boxShadow: [0,5,5,3, 'lightgrey'],
+        }
+    }
+);
 
 const MainHeader = (props) => {
+    const classes = useStyles()
 
     return (
-        <div className="container">
+        <div className={clsx("container main-header mb-4", classes.boxShadow)}>
             <div className="d-flex">
-                <h1>Warehouses & Stores</h1>
+                <h1 className="font-italic">Warehouses & Stores</h1>
             </div>
             {props.isSignedIn && (
                 <div className="d-flex">
-                    <a href="/warehouse">Your warehouses </a>
-                    <a href="/stores">Your Stores</a>
-                    <p>{props.currentUser.first_name}</p>
-                    <a href={Routes.edit_user_registration_path()}>Edit Profile</a>
-                    <a href={Routes.destroy_user_session_path()} >Logout</a>
+                    <div className='mt-10'>
+                        <Button variant="contained" color="default" href="/warehouse" className="mr-4">Your warehouses</Button>
+                        <Button variant="contained" color="default" href="/store" className="mr-4">Your stores</Button>
 
+                    </div>
+                    <div className="ml-auto">
+                        <Button variant="contained" color="primary" href={Routes.edit_user_registration_path()} className="mr-4">Edit profile</Button>
+                        <Button variant="contained" color="secondary" href={Routes.destroy_user_session_path()} className="mr-4">Logout</Button>
+                        <div className={clsx('mb-4 font-italic', classes.fontSize)}>User: {props.currentUser.first_name} {props.currentUser.last_name}</div>
+                    </div>
                 </div>
             )}
             {!props.isSignedIn && (
                 <div className="d-flex">
-                    <a href={Routes.new_user_session_path()}>Login</a>
-                    <a href={Routes.new_user_registration_path()}>Sign In</a>
+                    <Button variant="contained" color="primary" href={Routes.new_user_session_path()} className="mr-4">Login</Button>
+                    <Button variant="contained" color="primary" href={Routes.new_user_registration_path()} className="mr-4">Sign In</Button>
+                    {/*<a href={Routes.new_user_session_path()} type='button' className="btn btn-info">Login</a>*/}
+                    {/*<a href={Routes.new_user_registration_path()} type='button' className="ml-4 btn btn-info">Sign In</a>*/}
                 </div>
             )}
         </div>
     );
 };
 
-export default MainHeader;
-
+export default (props) => <MainHeader {...props} />;

@@ -4,7 +4,14 @@ Rails.application.routes.draw do
   devise_for :users do
   end
 
-  resources :warehouse
+  resources :warehouse do
+    resources :product
+  end
 
+  resources :store do
+    resources :product
+  end
+
+  resources :order
   root "home#index"
 end

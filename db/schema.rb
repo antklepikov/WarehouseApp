@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_115443) do
+ActiveRecord::Schema.define(version: 2020_04_28_101410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,22 +21,26 @@ ActiveRecord::Schema.define(version: 2020_03_25_115443) do
     t.bigint "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "warehouse_id", null: false
+    t.integer "status", default: 0
     t.index ["product_id"], name: "index_orders_on_product_id"
     t.index ["store_id"], name: "index_orders_on_store_id"
+    t.index ["warehouse_id"], name: "index_orders_on_warehouse_id"
   end
 
   create_table "products", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "products_count", default: 0
   end
 
   create_table "products_warehouses", force: :cascade do |t|
-    t.integer "in_stoke"
     t.bigint "warehouse_id", null: false
     t.bigint "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "products_count", default: 0
     t.index ["product_id"], name: "index_products_warehouses_on_product_id"
     t.index ["warehouse_id"], name: "index_products_warehouses_on_warehouse_id"
   end
@@ -45,6 +49,8 @@ ActiveRecord::Schema.define(version: 2020_03_25_115443) do
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_stores_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -73,7 +79,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_115443) do
 
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "stores"
-  add_foreign_key "products_warehouses", "products"
-  add_foreign_key "products_warehouses", "warehouses"
+  add_foreign_key "orders", "warehouses"
+  add_foreign_key "stores", "users"
   add_foreign_key "warehouses", "users"
 end

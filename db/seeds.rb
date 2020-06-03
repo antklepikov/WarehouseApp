@@ -5,4 +5,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Warehouse.create([{title: 'Best'}, {number: 1}, {address: 'Petrovskaya'}])
+# Product.create([{title: 'Best'}])
+# 10.times do
+#   User.create!(
+#       email: Faker::Internet.email,
+#       first_name: Faker::Name.first_name,
+#       last_name: Faker::Name.last_name,
+#       password: "123456"
+#   )
+# end
+#
+# 20.times do
+#   Warehouse.create(
+#       title: Faker::Commerce.product_name,
+#       address: Faker::Address.street_address,
+#       number: Faker::Number.within(range: 5..30),
+#       user_id: Faker::Number.within(range: 6..17)
+#   )
+# end
+# 800.times do
+#   Store.create(
+#     user_id: Faker::Number.within(range: 6..17),
+#     title: Faker::Restaurant.name
+# )
+# end
