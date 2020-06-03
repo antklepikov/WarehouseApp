@@ -6,7 +6,7 @@ class StoreController < ApplicationController
   def show
     @warehouses = current_user.warehouses
     @store = Store.find(params[:id])
-    @productsInStores = ActiveModelSerializers::SerializableResource.new(@store.orders.where(status: "approved"), each_serializer: OrderSerializer)
+    @products_in_stores = ActiveModelSerializers::SerializableResource.new(@store.orders.where(status: "approved"), each_serializer: OrderSerializer)
 
   end
 
@@ -16,7 +16,7 @@ class StoreController < ApplicationController
     if @store.save
       respond_to do |format|
         format.html
-        format.json { render json: {store: ActiveModelSerializers::SerializableResource.new(@store, each_serializer: StoreSerializer)} }
+        format.json { render json: {store: StoreSerializer.new(@store).as_json} }
       end
     else
       render :json => { :error => @store.errors.full_messages }

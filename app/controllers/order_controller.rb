@@ -1,9 +1,9 @@
 class OrderController < ApplicationController
   def show
     @order = Order.find(params[:id])
-    @productOrder = ActiveModelSerializers::SerializableResource.new(@order, each_serializer: OrderSerializer)
+    @product_order = OrderSerializer.new(@order).as_json
 
-    @productCount = ActiveModelSerializers::SerializableResource.new(ProductsWarehouse.find_by(product_id: @order.product_id), serializer: ProductsWarehousesSerializer)
+    @product_count = ProductsWarehousesSerializer.new(ProductsWarehouse.find_by(product_id: @order.product_id)).as_json
   end
 
   def create

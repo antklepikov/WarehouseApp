@@ -1,15 +1,15 @@
 class ProductController < ApplicationController
 
   def index
-    @productsWarehouse = ProductsWarehouse.where(warehouse_id: params[:warehouse_id]).page(params[:page]).per(params[:page] ? 5 : 1000)
+    @products_warehouse = ProductsWarehouse.where(warehouse_id: params[:warehouse_id]).page(params[:page]).per(params[:page] ? 5 : 1000)
 
     respond_to do |format|
       format.html
       format.json { render(
           {json:
                {
-                   products: ActiveModel::Serializer::CollectionSerializer.new(@productsWarehouse, serializer: ProductsWarehousesSerializer),
-                   total_pages: @productsWarehouse.total_pages
+                   products: ActiveModel::Serializer::CollectionSerializer.new(@products_warehouse, serializer: ProductsWarehousesSerializer),
+                   total_pages: @products_warehouse.total_pages
                }
           }
       ) }
@@ -19,8 +19,8 @@ class ProductController < ApplicationController
   def create
     warehouse = Warehouse.find(params[:warehouse_id])
     @product = Product.new(products_params)
-    @warehouseProduct = ProductsWarehouse.new(warehouse_id: warehouse.id, product_id: @product.id, products_count: params[:productCount]).save
-    if @product.save && @warehouseProduct.save
+    @warehouse_product = ProductsWarehouse.new(warehouse_id: warehouse.id, product_id: @product.id, products_count: params[:productCount]).save
+    if @product.save && @warehouse_product.save
       respond_to do |format|
         format.html
         format.json { render json: @product }
@@ -33,7 +33,7 @@ class ProductController < ApplicationController
 
   def destroy
     @product = Product.find(params[:id])
-    @warehouseProduct =  ProductsWarehouse.where(product_id: @product.id)
+    @warehouse_product =  ProductsWarehouse.where(product_id: @product.id)
   end
 
   private

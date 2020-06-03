@@ -21,7 +21,7 @@ class WarehouseController < ApplicationController
   def show
     @stores = ActiveModelSerializers::SerializableResource.new(@orders_stores, each_serializer: StoreSerializer)
 
-    @orderInWarehouse = ActiveModelSerializers::SerializableResource.new(Order.where(warehouse_id: @warehouse.id, status: "active"), each_serializer: OrderSerializer)
+    @order_in_warehouse = ActiveModelSerializers::SerializableResource.new(@warehouse.orders.where(status: "active"), each_serializer: OrderSerializer)
   end
 
   def create
@@ -30,7 +30,7 @@ class WarehouseController < ApplicationController
     if @warehouse.save
       respond_to do |format|
         format.html
-        format.json { render json: {warehouse: ActiveModelSerializers::SerializableResource.new(@warehouse, each_serializer: WarehouseSerializer)} }
+        format.json { render json: {warehouse: WarehouseSerializer.new(@warehouse).as_json} }
       end
     else
       render :json => { :error => @warehouse.errors.full_messages }
@@ -42,7 +42,7 @@ class WarehouseController < ApplicationController
     if @warehouse.update(warehouse_params)
       respond_to do |format|
         format.html
-        format.json { render json: {warehouse: ActiveModelSerializers::SerializableResource.new(@warehouse, each_serializer: WarehouseSerializer)} }
+        format.json { render json: {warehouse: WarehouseSerializer.new(@warehouse).as_json} }
       end
     else
       render :json => { :error => @warehouse.errors.full_messages }
