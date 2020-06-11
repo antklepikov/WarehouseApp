@@ -30,7 +30,6 @@ const AddNewWarehouseModal = (props) => {
     const [open, setOpen] = useState(false);
     const [textError, setTextError] = useState('')
     const toggle = () => setModal(!modal);
-    console.log(textError)
     const [headData, setHeadData] = useState({title: '', number: '', address: ''});
 
 
