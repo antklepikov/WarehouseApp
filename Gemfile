@@ -9,6 +9,7 @@ gem 'js-routes'
 gem 'simple_form'
 gem 'faker'
 gem 'kaminari'
+gem "graphql"
 gem 'active_model_serializers', '~> 0.10.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -62,3 +63,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'mini_racer', platforms: :ruby
+gem 'graphiql-rails', group: :development

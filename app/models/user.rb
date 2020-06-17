@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+
   has_many :warehouses
   has_many :stores
   # Include default devise modules. Others available are:

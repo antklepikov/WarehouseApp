@@ -42,20 +42,21 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
     const [dropdownOpenOrder, setDropdownOpenOrder] = useState(false);
     const [dropdownOpenStores, setDropdownOpenStores] = useState(false);
     const [page, setPage] = useState(0);
-    const [products, setProducts] = useState([]);
+
+    const [data, setData] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
+
     const [open, setOpen] = useState(false);
     const [textError, setTextError] = useState('')
     const dropdownOrder = () => setDropdownOpenOrder(prevState => !prevState);
     const dropdownStores = () => setDropdownOpenStores(prevState => !prevState);
+
     const classes = useStyles()
+    console.log("before effect")
 
-    useEffect(() => {
-        getProduct()
-    }, [page]);
 
-    const getProduct = () => {
-        axios.get(`/warehouse/${warehouse.id}/product`, {
+    const getData = () => {
+        axios.get(`/warehouse/62`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8'
@@ -65,10 +66,16 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
             }
         })
             .then((response) => {
-                setProducts(response.data.products);
+                console.log("response", response)
+                setData(response.data);
                 setTotalPages(response.data.total_pages)
-            });
+            })
+            .catch((res)=>{
+                console.log("res", res)
+            })
     }
+
+
     const createProduct = () => {
         axios.post(`/warehouse/${warehouse.id}/product`, {
             product: {
@@ -103,200 +110,208 @@ const WarehousePage = ({ warehouse,  stores, order}) => {
         setOpen(false);
         setTextError('')
     };
+
+    useEffect(() => {
+        getData()
+        console.log("in effect")
+
+    }, []);
+
     return (
-        <div className='container'>
-            <div className="d-flex">
-                <div>
-                    <div className="font-weight-bold">
-                        Title of warehouse:
-                        <h4 className="font-italic font-weight-light">
-                            {warehouse.title}
-                        </h4>
-                    </div>
-                    <div className="font-weight-bold">
-                        Number of warehouse:
-                        <h4 className="font-italic font-weight-light">
-                            {warehouse.number}
-                        </h4>
-                    </div>
-                    <div className="font-weight-bold">
-                        Address of warehouse:
-                        <h4 className="font-italic font-weight-light">
-                            {warehouse.address}
-                        </h4>
-                    </div>
-                </div>
-                <UpdateWarehouseModal warehouse={warehouse}/>
-
-                <Dropdown className="ml-3"  isOpen={dropdownOpenOrder} toggle={dropdownOrder}>
-                    <DropdownToggle color='warning' caret>
-                        Orders
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {map(order, (orderItem, key) => {
-                            if (orderItem.count > 1) {
-                                return (
-                                    <DropdownItem key={key} className="p-0" href={`/order/${orderItem.id}`}>
-                                        <div className="d-flex">
-                                            <div className="mr-2 col-6">
-                                                <small>Title:</small>
-                                                <div className='font-italic'>{truncate(orderItem.product.title, {length : 10})  }</div>
-                                            </div>
-                                            <div className="mr-2 col-6 border-left">
-                                                <small>Count:</small>
-                                                <p className="font-italic">{orderItem.count}</p>
-                                            </div>
-                                            <p>and more...</p>
-                                        </div>
-                                    </DropdownItem>
-                                )
-                            } else {
-                                return (
-                                    <DropdownItem key={key} className='p-0' href={`/order/${orderItem.id}`}>
-                                        <div className="d-flex">
-                                            <div className="mr-2 col-6 ">
-                                                <small>Title:</small>
-                                                <div className="font-italic">{truncate(orderItem.product.title, {length : 10})  }</div>
-                                            </div>
-                                            <div className="mr-2 col-6 border-left ">
-                                                <small>Count:</small>
-                                                <p className="font-italic">{orderItem.count}</p>
-                                            </div>
-                                        </div>
-                                    </DropdownItem>
-                                )
-                            }
-
-                        })}
-                    </DropdownMenu>
-                </Dropdown>
-
-                <Dropdown className="ml-3 " isOpen={dropdownOpenStores} toggle={dropdownStores}>
-                    <DropdownToggle caret>
-                        Frequently ordering stores
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {map(stores, (storesElement, key) => {
-                            return (
-                                <DropdownItem key={key} className="" href={`/store/${storesElement.id}`}>
-                                    <div className="d-flex">
-                                        <div className="m-auto font-italic md-2">
-                                            {storesElement.title}
-                                        </div>
-                                    </div>
-                                </DropdownItem>
-                            )
-                        })
-
-                        }
-
-                    </DropdownMenu>
-                </Dropdown>
-
-
-                <div className="ml-auto text-center font-italic">
-                    Add new product:
-
-                    <div>
-                        <TextField id="outlined-title"
-                                   className="mb-4"
-                                   label="Title"
-                                   variant="outlined"
-                                   value={productData.title || ''}
-                                   onChange={(e) => setProductData({...productData, title: e.target.value})}/>
-
-                    </div>
-                    <div>
-                        <TextField id="outlined-count"
-                                   className="mb-4 "
-                                   label="Count"
-                                   variant="outlined"
-                                   value={productData.productsCount || ''}
-                                   onChange={(e) => setProductData({...productData, productsCount: e.target.value})}/>
-
-                    </div>
-                    <Button variant="contained" className={classes.goldButton} onClick={createProduct}>
-                        Send
-                    </Button>
-                    <div>
-                        <Snackbar open={open}  onClose={handleClose} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-                            <Alert onClose={handleClose} severity="error" variant="filled">
-                                {map(textError, (error, key)=>{
-                                    return(
-                                        <div key={key}>{error}<br></br></div>
-                                    )
-
-                                })}
-                            </Alert>
-                        </Snackbar>
-                    </div>
-
-                </div>
-            </div>
-
-            <div className="col-6">
-                <TableContainer component={Paper}>
-                    <Table className="" aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>№</TableCell>
-                                <TableCell align="center">Title</TableCell>
-                                <TableCell align="center">Count</TableCell>
-
-
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {products.map((row, key) => (
-                                <TableRow key={key}>
-                                    <TableCell component="th" scope="row">
-                                        {key}
-                                    </TableCell>
-                                    <TableCell align="center">{row.product.title}</TableCell>
-                                    <TableCell align="center">{row.products_count}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-
-                    </Table>
-                </TableContainer>
-                <div className="mt-4">
-
-                <ReactPaginate
-                    previousLabel={
-                        <div className="page-item d-flex justify-content-center">
-                            <div className="page-link">
-                                {'<'}
-                            </div>
-                        </div>
-                    }
-                    nextLabel={
-                        <div className="page-item d-flex justify-content-center">
-                            <div className="page-link">
-                                {'>'}
-                            </div>
-                        </div>
-                    }
-                    breakLabel={
-                        <div className="page-item d-flex justify-content-center">
-                            <div className="page-link">...</div>
-                        </div>
-                    }
-                    pageClassName='page-item page-link'
-                    breakClassName={'break-me'}
-                    pageCount={totalPages}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={2}
-                    containerClassName={'pagination justify-content-center'}
-                    subContainerClassName={'pages pagination'}
-                    activeClassName={'active'}
-                    onPageChange={onChangePage}
-                    hrefBuilder={() => `/warehouse/${warehouse.id}/product`}
-                />
-
-                </div>
-            </div>
-        </div>
+        <div></div>
+        // <div className='container'>
+        //     <div className="d-flex">
+        //         <div>
+        //             <div className="font-weight-bold">
+        //                 Title of warehouse:
+        //                 <h4 className="font-italic font-weight-light">
+        //                     {warehouse.title}
+        //                 </h4>
+        //             </div>
+        //             <div className="font-weight-bold">
+        //                 Number of warehouse:
+        //                 <h4 className="font-italic font-weight-light">
+        //                     {warehouse.number}
+        //                 </h4>
+        //             </div>
+        //             <div className="font-weight-bold">
+        //                 Address of warehouse:
+        //                 <h4 className="font-italic font-weight-light">
+        //                     {warehouse.address}
+        //                 </h4>
+        //             </div>
+        //         </div>
+        //         <UpdateWarehouseModal warehouse={warehouse}/>
+        //
+        //         <Dropdown className="ml-3"  isOpen={dropdownOpenOrder} toggle={dropdownOrder}>
+        //             <DropdownToggle color='warning' caret>
+        //                 Orders
+        //             </DropdownToggle>
+        //             <DropdownMenu>
+        //                 {map(order, (orderItem, key) => {
+        //                     if (orderItem.count > 1) {
+        //                         return (
+        //                             <DropdownItem key={key} className="p-0" href={`/order/${orderItem.id}`}>
+        //                                 <div className="d-flex">
+        //                                     <div className="mr-2 col-6">
+        //                                         <small>Title:</small>
+        //                                         <div className='font-italic'>{truncate(orderItem.product.title, {length : 10})  }</div>
+        //                                     </div>
+        //                                     <div className="mr-2 col-6 border-left">
+        //                                         <small>Count:</small>
+        //                                         <p className="font-italic">{orderItem.count}</p>
+        //                                     </div>
+        //                                     <p>and more...</p>
+        //                                 </div>
+        //                             </DropdownItem>
+        //                         )
+        //                     } else {
+        //                         return (
+        //                             <DropdownItem key={key} className='p-0' href={`/order/${orderItem.id}`}>
+        //                                 <div className="d-flex">
+        //                                     <div className="mr-2 col-6 ">
+        //                                         <small>Title:</small>
+        //                                         <div className="font-italic">{truncate(orderItem.product.title, {length : 10})  }</div>
+        //                                     </div>
+        //                                     <div className="mr-2 col-6 border-left ">
+        //                                         <small>Count:</small>
+        //                                         <p className="font-italic">{orderItem.count}</p>
+        //                                     </div>
+        //                                 </div>
+        //                             </DropdownItem>
+        //                         )
+        //                     }
+        //
+        //                 })}
+        //             </DropdownMenu>
+        //         </Dropdown>
+        //
+        //         <Dropdown className="ml-3 " isOpen={dropdownOpenStores} toggle={dropdownStores}>
+        //             <DropdownToggle caret>
+        //                 Frequently ordering stores
+        //             </DropdownToggle>
+        //             <DropdownMenu>
+        //                 {map(stores, (storesElement, key) => {
+        //                     return (
+        //                         <DropdownItem key={key} className="" href={`/store/${storesElement.id}`}>
+        //                             <div className="d-flex">
+        //                                 <div className="m-auto font-italic md-2">
+        //                                     {storesElement.title}
+        //                                 </div>
+        //                             </div>
+        //                         </DropdownItem>
+        //                     )
+        //                 })
+        //
+        //                 }
+        //
+        //             </DropdownMenu>
+        //         </Dropdown>
+        //
+        //
+        //         <div className="ml-auto text-center font-italic">
+        //             Add new product:
+        //
+        //             <div>
+        //                 <TextField id="outlined-title"
+        //                            className="mb-4"
+        //                            label="Title"
+        //                            variant="outlined"
+        //                            value={productData.title || ''}
+        //                            onChange={(e) => setProductData({...productData, title: e.target.value})}/>
+        //
+        //             </div>
+        //             <div>
+        //                 <TextField id="outlined-count"
+        //                            className="mb-4 "
+        //                            label="Count"
+        //                            variant="outlined"
+        //                            value={productData.productsCount || ''}
+        //                            onChange={(e) => setProductData({...productData, productsCount: e.target.value})}/>
+        //
+        //             </div>
+        //             <Button variant="contained" className={classes.goldButton} onClick={createProduct}>
+        //                 Send
+        //             </Button>
+        //             <div>
+        //                 <Snackbar open={open}  onClose={handleClose} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+        //                     <Alert onClose={handleClose} severity="error" variant="filled">
+        //                         {map(textError, (error, key)=>{
+        //                             return(
+        //                                 <div key={key}>{error}<br></br></div>
+        //                             )
+        //
+        //                         })}
+        //                     </Alert>
+        //                 </Snackbar>
+        //             </div>
+        //
+        //         </div>
+        //     </div>
+        //
+        //     <div className="col-6">
+        //         <TableContainer component={Paper}>
+        //             <Table className="" aria-label="simple table">
+        //                 <TableHead>
+        //                     <TableRow>
+        //                         <TableCell>№</TableCell>
+        //                         <TableCell align="center">Title</TableCell>
+        //                         <TableCell align="center">Count</TableCell>
+        //
+        //
+        //                     </TableRow>
+        //                 </TableHead>
+        //                 <TableBody>
+        //                     {products.map((row, key) => (
+        //                         <TableRow key={key}>
+        //                             <TableCell component="th" scope="row">
+        //                                 {key}
+        //                             </TableCell>
+        //                             <TableCell align="center">{row.product.title}</TableCell>
+        //                             <TableCell align="center">{row.products_count}</TableCell>
+        //                         </TableRow>
+        //                     ))}
+        //                 </TableBody>
+        //
+        //             </Table>
+        //         </TableContainer>
+        //         <div className="mt-4">
+        //
+        //         <ReactPaginate
+        //             previousLabel={
+        //                 <div className="page-item d-flex justify-content-center">
+        //                     <div className="page-link">
+        //                         {'<'}
+        //                     </div>
+        //                 </div>
+        //             }
+        //             nextLabel={
+        //                 <div className="page-item d-flex justify-content-center">
+        //                     <div className="page-link">
+        //                         {'>'}
+        //                     </div>
+        //                 </div>
+        //             }
+        //             breakLabel={
+        //                 <div className="page-item d-flex justify-content-center">
+        //                     <div className="page-link">...</div>
+        //                 </div>
+        //             }
+        //             pageClassName='page-item page-link'
+        //             breakClassName={'break-me'}
+        //             pageCount={totalPages}
+        //             marginPagesDisplayed={2}
+        //             pageRangeDisplayed={2}
+        //             containerClassName={'pagination justify-content-center'}
+        //             subContainerClassName={'pages pagination'}
+        //             activeClassName={'active'}
+        //             onPageChange={onChangePage}
+        //             hrefBuilder={() => `/warehouse/${warehouse.id}/product`}
+        //         />
+        //
+        //         </div>
+        //     </div>
+        // </div>
     )
 };
 
@@ -306,6 +321,6 @@ WarehousePage.propTypes = {
     warehouse: PropTypes.object
 }
 
-const WarehousePageChange = React.memo(WarehousePage);
 
-export default (props) => <WarehousePageChange {...props} />;
+
+export default (props) => <WarehousePage {...props} />;

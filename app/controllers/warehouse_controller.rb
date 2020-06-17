@@ -1,7 +1,7 @@
 class WarehouseController < ApplicationController
 
-  before_action :set_warehouse, only: [:show, :destroy, :update]
-  before_action :popular_stores, only: [:show]
+  before_action :set_warehouse, only: %i[show destroy update]
+  before_action :popular_stores, only: :show
 
   def index
     @warehouses = current_user.warehouses.page(params[:page])
@@ -19,9 +19,25 @@ class WarehouseController < ApplicationController
   end
 
   def show
-    @stores = ActiveModelSerializers::SerializableResource.new(@orders_stores, each_serializer: StoreSerializer)
 
-    @order_in_warehouse = ActiveModelSerializers::SerializableResource.new(@warehouse.orders.where(status: "active"), each_serializer: OrderSerializer)
+    # @stores = ActiveModelSerializers::SerializableResource.new(@orders_stores, each_serializer: StoreSerializer)
+    # @order_in_warehouse = ActiveModelSerializers::SerializableResource.new(@warehouse.orders.where(status: "active"), each_serializer: OrderSerializer)
+
+    @products_warehouse = ProductsWarehouse.where(warehouse_id: params[:warehouse_id]).page(params[:page]).per(params[:page] ? 5 : 1000)
+    respond_to do |format|
+      format.html
+      format.json { render(
+          {json:
+               {
+                   warehouse: @warehouse,
+                   stores: ActiveModelSerializers::SerializableResource.new(@orders_stores, each_serializer: StoreSerializer),
+                   order_in_warehouse: ActiveModelSerializers::SerializableResource.new(@warehouse.orders.where(status: "active"), each_serializer: OrderSerializer),
+                   products: ActiveModel::Serializer::CollectionSerializer.new(@products_warehouse, serializer: ProductsWarehousesSerializer),
+                   total_pages: @products_warehouse.total_pages
+               }
+          }
+      ) }
+    end
   end
 
   def create
