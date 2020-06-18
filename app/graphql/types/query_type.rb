@@ -1,18 +1,18 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+      field :warehouses, [Types::WarehouseType], null: false
 
-    # TODO: remove me
-    field :warehouses,
-          [Types::WarehouseType],
-          null: false do
-          description "Return a list of warehouses"
+      def warehouses
+        Warehouse.all
+      end
+
+
+      field :warehouse, Types::WarehouseType, null: false do
+        argument :id, ID, required: true
+      end
+
+      def warehouse(id:)
+        Warehouse.find(id)
+      end
     end
-
-
-    def warehouses
-      Warehouse.all
-    end
-  end
 end
